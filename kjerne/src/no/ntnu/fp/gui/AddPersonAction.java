@@ -2,6 +2,7 @@ package no.ntnu.fp.gui;
 //sigurd
 //sigurd
 //sigurd
+//sigurd
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
