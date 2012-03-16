@@ -1,5 +1,6 @@
 package no.ntnu.fp.gui;
 //sigurd
+//anton
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
