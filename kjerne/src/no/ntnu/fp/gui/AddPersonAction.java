@@ -3,6 +3,7 @@ package no.ntnu.fp.gui;
 //sigurd
 //sigurd
 //sigurd
+//http://folk.ntnu.no/martme/?page=blog&method=entry&id=66
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
