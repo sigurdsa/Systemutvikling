@@ -4,6 +4,7 @@ package no.ntnu.fp.gui;
 //sigurd
 //sigurd
 //http://folk.ntnu.no/martme/?page=blog&method=entry&id=66
+//sigurd hjemme test
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
