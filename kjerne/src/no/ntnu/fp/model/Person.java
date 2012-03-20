@@ -30,6 +30,16 @@ public class Person {
 	private Date dateOfBirth;
 	
 	/**
+	 * Brukernavn
+	 */
+	private String username;
+	
+	/**
+	 * passord kryptert
+	 */
+	private String password;	
+	
+	/**
 	 * This member variable holds a unique identifier for this object.
 	 */
 	private long id;

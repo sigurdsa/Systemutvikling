@@ -25,6 +25,12 @@ public class Project implements PropertyChangeListener {
 	private java.beans.PropertyChangeSupport propChangeSupp;
 	
 	/**
+	 * Innlogget som
+	 */
+
+	Person loggedInAs = null;
+	
+	/**
 	 * Default constructor.  Must be called to initialise the object's member variables.
 	 *
 	 */
@@ -196,4 +202,20 @@ public class Project implements PropertyChangeListener {
 		return s;
 	}
 	
+	/**
+	 * Login
+	 * Går igjennom alle Person-objektene, og sjekker om brukernavn/passord eksiterer
+	 * loggedInAs blir så satt til Person-objektet
+	 * Returnerer true om innlogget
+	 */
+	public boolean login(String username, String password){
+		return false;
+	}
+	
+	/**
+	 * Logger brukeren ut, setter loggedInAs til null
+	 */
+	public void logout() {
+		loggedInAs = null;
+	}
 }
