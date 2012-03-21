@@ -8,27 +8,12 @@ import java.util.Date;
  * @author Øyvind
  * 
  */
-public class Meeting {
+public class Meeting extends AbstractAppointment {
 	/**
 	 * Person møteleder
 	 */
 	private Person meetingLeader;
-	
-	/**
-	 * Start
-	 */
-	private Date startTime;
-	
-	/**
-	 * Slutt
-	 */
-	private Date endTime;
-	
-	/**
-	 * Beskrivelse av møtet
-	 */
-	private String description;
-	
+
 	/**
 	 * Møterom 
 	 */
@@ -47,8 +32,16 @@ public class Meeting {
 	/**
 	 * Konstruktør - Legg inn det som trengs
 	 */
-	public Meeting() {
-		
+	
+	public Meeting(Date startTime, Date endTime, String description, Person meetingLeader) {
+		super(startTime, endTime, description);
+		this.meetingLeader = meetingLeader;
+	}
+	
+	public Meeting(Date startTime, Date endTime, String description, Person meetingLeader, Meetingroom meetingRoom) {
+		super(startTime, endTime, description);
+		this.meetingLeader = meetingLeader;
+		this.meetingRoom = meetingRoom;
 	}
 	
 	public Person getMeetingLeader() {
@@ -59,29 +52,6 @@ public class Meeting {
 		this.meetingLeader = meetingLeader;
 	}
 
-	public Date getStartTime() {
-		return startTime;
-	}
-
-	public void setStartTime(Date startTime) {
-		this.startTime = startTime;
-	}
-
-	public Date getEndTime() {
-		return endTime;
-	}
-
-	public void setEndTime(Date endTime) {
-		this.endTime = endTime;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
 
 	public Meetingroom getMeetingRoom() {
 		return meetingRoom;
