@@ -26,11 +26,11 @@ public abstract class AbstractAppointment {
 		this.description = description;
 	}
 	
-	public Date getStart(){
+	public Date getStartTime(){
 		return startTime;
 	}
 	
-	public Date getEnd(){
+	public Date getEndTime(){
 		return endTime;
 	}
 	
