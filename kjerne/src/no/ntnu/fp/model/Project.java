@@ -172,6 +172,8 @@ public class Project implements PropertyChangeListener {
 	public void propertyChange(PropertyChangeEvent event) {
 		propChangeSupp.firePropertyChange(event);
 	}
+	
+	public void createMeeting(Date startTime, Date endTime){}
 
 	/**
 	 * {@inheritDoc}
