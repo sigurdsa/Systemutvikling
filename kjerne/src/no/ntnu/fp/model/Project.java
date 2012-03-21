@@ -2,6 +2,8 @@ package no.ntnu.fp.model;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
@@ -16,13 +18,18 @@ public class Project implements PropertyChangeListener {
 	/**
 	 * The member variable storing all registered {@link Person} objects.
 	 */
-	private java.util.ArrayList personList;
+	private ArrayList personList;
+	
+	/**
+	 * Alle møterom er lagret her
+	 */
+	private ArrayList<Meetingroom> meetingRooms;
 	
 	/**
 	 * This member variable provides functionality for notifying of changes to
 	 * the <code>Project</code> class.
 	 */
-	private java.beans.PropertyChangeSupport propChangeSupp;
+	private PropertyChangeSupport propChangeSupp;
 	
 	/**
 	 * Innlogget som
@@ -209,6 +216,11 @@ public class Project implements PropertyChangeListener {
 	 * Returnerer true om innlogget
 	 */
 	public boolean login(String username, String password){
+		Iterator itr = personList.iterator();
+		while(itr.hasNext()){
+			Person p = (Person) itr.next();
+			if (p)
+		}
 		return false;
 	}
 	
