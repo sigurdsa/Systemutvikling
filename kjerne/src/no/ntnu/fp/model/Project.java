@@ -237,15 +237,19 @@ public class Project implements PropertyChangeListener {
 	
 	/**
 	 * Genererer en liste med møterom som er ledig i den gitte tidsperioden
+	 * @return 
 	 */
 	
-	public void generateAvailableRooms(Date start, Date end) {
+	public ArrayList<Meetingroom> generateAvailableRooms(Date start, Date end) {
 		ArrayList<Meetingroom> rooms = new ArrayList<Meetingroom>();
 		Iterator itr = meetingRooms.iterator();
 		
 		while(itr.hasNext()) {
 			Meetingroom m = (Meetingroom) itr.next();
-			if (m.isFree(start,end))
+			if (m.isFree(start,end)) rooms.add(m);
 		}
+		return rooms;
 	}
+	
+	
 }
