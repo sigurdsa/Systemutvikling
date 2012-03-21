@@ -248,7 +248,7 @@ public class Project implements PropertyChangeListener {
 			Meetingroom m = (Meetingroom) itr.next();
 			if (m.isFree(start,end)) rooms.add(m);
 		}
-
+//
 		return rooms;
 		
 	}
