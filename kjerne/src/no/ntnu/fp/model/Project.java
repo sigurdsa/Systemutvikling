@@ -249,6 +249,7 @@ public class Project implements PropertyChangeListener {
 			if (m.isFree(start,end)) rooms.add(m);
 		}
 		return rooms;
+		
 	}
 	
 	
