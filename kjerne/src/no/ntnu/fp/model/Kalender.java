@@ -1,18 +1,33 @@
 package no.ntnu.fp.model;
 
-import sun.util.calendar.LocalGregorianCalendar.Date;
+import java.util.ArrayList;
+import java.util.Calendar;
+
 
 public class Kalender {
 
-	public void getCalendarPerson(Person person) {
-		return;
+	private ArrayList<Appointment> Appointment = new ArrayList<Appointment>();
+	private ArrayList<Meeting> Meeting = new ArrayList<Meeting>();
+
+	public Kalender() {
+	Calendar.getInstance();
+	
 	}
 
-	public void getOwnCalendar(){
-		return;
+	public void delMeeting(Appointment a) {
+		
+			
 	}
-	
+
+	public Kalender getCalendarPerson(Person person) {
+		return this.calendar;
+	}
+
+	public void getOwnCalendar() {
+		return this.calendar;
+	}
+
 	public void getDate(Date date){
-		return;
+		return
 	}
 }
