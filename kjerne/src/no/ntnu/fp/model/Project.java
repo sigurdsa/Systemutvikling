@@ -4,6 +4,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 
 /**
@@ -18,7 +19,7 @@ public class Project implements PropertyChangeListener {
 	/**
 	 * The member variable storing all registered {@link Person} objects.
 	 */
-	private ArrayList personList;
+	private ArrayList<Person> personList;
 	
 	/**
 	 * Alle møterom er lagret her
@@ -189,7 +190,7 @@ public class Project implements PropertyChangeListener {
 		
 		Iterator it = this.iterator();
 		while (it.hasNext()) {
-			Person aPerson = (Person)it.next();
+			Person aPerson = (Person) it.next();
 			if (aProject.indexOf(aPerson) < 0)
 				return false;
 		}
@@ -219,7 +220,10 @@ public class Project implements PropertyChangeListener {
 		Iterator itr = personList.iterator();
 		while(itr.hasNext()){
 			Person p = (Person) itr.next();
-			if (p)
+			if (p.getUsername().equals(username) && p.getPassword().equals(password)) {
+				this.loggedInAs = p;
+				return true;
+			}
 		}
 		return false;
 	}
@@ -229,5 +233,19 @@ public class Project implements PropertyChangeListener {
 	 */
 	public void logout() {
 		loggedInAs = null;
+	}
+	
+	/**
+	 * Genererer en liste med møterom som er ledig i den gitte tidsperioden
+	 */
+	
+	public void generateAvailableRooms(Date start, Date end) {
+		ArrayList<Meetingroom> rooms = new ArrayList<Meetingroom>();
+		Iterator itr = meetingRooms.iterator();
+		
+		while(itr.hasNext()) {
+			Meetingroom m = (Meetingroom) itr.next();
+			if (m.isFree(start,end))
+		}
 	}
 }
