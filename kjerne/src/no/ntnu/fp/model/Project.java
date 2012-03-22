@@ -254,6 +254,11 @@ public class Project implements PropertyChangeListener {
 		return rooms;
 		
 	}
+
+	public void createMeeting(Date st, Date et, Meetingroom meetingroom) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 }
