@@ -269,6 +269,16 @@ public class Project implements PropertyChangeListener {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	public void showCalendar() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public String CountNewRequests() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 }

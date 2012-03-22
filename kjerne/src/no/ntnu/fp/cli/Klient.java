@@ -71,7 +71,7 @@ public class Klient {
 		System.out.println("1.  Show my calendar");
 		System.out.println("2.  Create a new meeting");
 		System.out.println("3.  Show all meetings");
-		System.out.println("4.  Show meeting requests. You have got " + p.getCountNewRequests + " requests.");
+		System.out.println("4.  Show meeting requests. You have got " + p.CountNewRequests() + " requests.");
 		System.out.println("0.  Log out");
 		
 		
@@ -84,22 +84,25 @@ public class Klient {
 		menuCounter = in.nextInt();
 		
 		switch (menuCounter){
-		case 1: showCalendar();
+		case 1: p.showCalendar();
 		break;
 		
 		case 2: createMeeting();
+		break;
 		
 		case 3: p.showAllMeetings();
+		break;
 		
-		case 4: p.addPerson(showMeetingRequests())
+		case 4: p.addPerson(p.showMeetingRequests());
+		break;
 		
 		case 0: p.logout();
+		break;
+		
+		default: System.out.println("You have not chosen a vaild number. Please try again.");
+		break;
 		
 		}
-	}
-	
-	public static void showCalendar(){
-		
 	}
 	
 	public static void createMeeting(){
