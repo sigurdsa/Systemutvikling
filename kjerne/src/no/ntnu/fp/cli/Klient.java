@@ -23,7 +23,7 @@ public class Klient {
 	static int menuCounter = -1;
 	
 	public static void main(String [] args){
-		do while (menuCounter != 0){
+		while (menuCounter != 0){
 			
 			switch (menuCounter){
 			
@@ -38,7 +38,6 @@ public class Klient {
 		}
 	}
 			
-
 	
 	public static void LogIn(){
 		System.out.print("Type username: ");
@@ -72,7 +71,7 @@ public class Klient {
 		System.out.println("1.  Show my calendar");
 		System.out.println("2.  Create a new meeting");
 		System.out.println("3.  Show all meetings");
-		System.out.println("4.  Show meetingrequests");
+		System.out.println("4.  Show meeting requests. You have got " + p.getCountNewRequests + " requests.");
 		System.out.println("0.  Log out");
 		
 		
@@ -90,6 +89,11 @@ public class Klient {
 		
 		case 2: createMeeting();
 		
+		case 3: p.showAllMeetings();
+		
+		case 4: p.addPerson(showMeetingRequests())
+		
+		case 0: p.logout();
 		
 		}
 	}
@@ -146,13 +150,11 @@ public class Klient {
 			
 			case "y": chooseRoom(st, et); 
 			
-				
-			
-			
 		
 	}
+	}
 		
-		public void chooseRom(Date st, Date et){
+		public static void chooseRoom(Date st, Date et){
 			ArrayList<Meetingroom> availableRooms =	p.generateAvailableRooms(st, et);
 			
 			if (availableRooms.size() == 0){
@@ -171,7 +173,7 @@ public class Klient {
 			System.out.println("/nThe following rooms are available in your specified period: ");
 			
 			for (int i = 0; i < availableRooms.size(); i++){
-				System.out.println("Room number: " + i + ", " + availableRooms.get(i).getName().);
+				System.out.println("Room number: " + i + ", " + availableRooms.get(i).getName());
 			}
 		
 			System.out.println("/n Type a room number: ");
@@ -186,4 +188,3 @@ public class Klient {
 		
 		// hva gjør vi her om det krasjer med noe du allerede har ikalenderen din?
 	}
-}
