@@ -33,7 +33,13 @@ public class Server {
 			System.exit(-1);
 		}
 		
-		
+		while(true) {
+			try {
+				InputStream is = clientSocket.getInputStream();
+				ObjectInputStream ois = new ObjectInputStream(is);
+				Object o = ois.readObject();
+			}
+		}
 		
 		
 		try {
