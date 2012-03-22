@@ -259,6 +259,16 @@ public class Project implements PropertyChangeListener {
 		// TODO Auto-generated method stub
 		
 	}
+
+	public void showAllMeetings() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public Person showMeetingRequests() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 }
