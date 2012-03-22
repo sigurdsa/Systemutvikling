@@ -3,12 +3,15 @@ package no.ntnu.fp.cli;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
+import no.ntnu.fp.model.Meeting;
 import no.ntnu.fp.model.Meetingroom;
+import no.ntnu.fp.model.Person;
 import no.ntnu.fp.model.Project;;
 
 public class Klient {
@@ -22,7 +25,7 @@ public class Klient {
 	
 	static int menuCounter = -1;
 	
-	public static void main(String [] args){
+	public static void main(String [] args) throws IOException{
 		while (menuCounter != 0){
 			
 			switch (menuCounter){
@@ -66,7 +69,7 @@ public class Klient {
 		
 	}
 	
-	public static void mainMenu(){
+	public static void mainMenu() throws IOException{
 		System.out.println("***MENU***");
 		System.out.println("1.  Show my calendar");
 		System.out.println("2.  Create a new meeting");
@@ -78,19 +81,21 @@ public class Klient {
 		// bare et forslag til meny, vet ikke om alt skal vises av meetingalternativer dersom man ikke er møteleder
 		// i noen prosjekter? Skal det kanskje stå i pkt 4 hvor mange man har fått?!
 		
-		System.out.println();
-		System.out.println("Choose a value from the menu: ");
+		System.out.println("/nChoose a value from the menu: ");
 	
 		menuCounter = in.nextInt();
 		
+		Meeting m;
 		switch (menuCounter){
 		case 1: p.showCalendar();
 		break;
 		
-		case 2: createMeeting();
+		case 2: m = createMeeting();
+		addParticipants(0, m);
 		break;
 		
-		case 3: p.showAllMeetings();
+		case 3: p.showAllMeetings(); // vet ikke om dnne trenger å være her, skal man heller klikke seg inn på kalenderen
+		// og vise møtene der?
 		break;
 		
 		case 4: p.addPerson(p.showMeetingRequests());
@@ -105,18 +110,41 @@ public class Klient {
 		}
 	}
 	
-	public static void createMeeting(){
-		System.out.println("Type date (dd/mm/yy): ");
-		String date;
-		try {
-			date = br.readLine();
-		} catch (IOException e3) {
-			// TODO Auto-generated catch block
-			e3.printStackTrace();
+	private static void addParticipants(int i, Meeting m) throws IOException {
+		while (i == 0) {
+		System.out.println("Would you like to add a participant? (y/n)");
+		String a = br.readLine();
+				
+		switch(a){
+		case "y": 
+			System.out.println("Choose one of the following persons"); // skal vi ta vekk dem som allerede er med på prosjektet??!
+			for (int j = 0; j < p.getPersonList().size(); j++){
+				System.out.println(j + ".  " + p.getPersonList().get(j));
+			}
+			
+			int o = in.nextInt();
+			m.addParticipant(p.getPersonList().get(o)); 
+			break;
+		case "n": i = 1;  
+		break;
+		
+		default: System.out.println("WRONG ANSWER");
+
+		
+	}
 		}
+	}
+		
+
+
+
+	public static Meeting createMeeting() throws IOException{
+		Meeting m = null;
+		System.out.println("Type date (dd/mm/yy): ");
+		String date = br.readLine();
 		
 		System.out.println("Type start time (hh:mm): ");
-		String startTime;
+		String startTime = null;
 		try {
 			startTime = br.readLine();
 		} catch (IOException e2) {
@@ -125,7 +153,7 @@ public class Klient {
 		}
 		
 		System.out.println("Type end time (hh:mm): ");
-		String endTime;
+		String endTime = null;
 		try {
 			endTime = br.readLine();
 		} catch (IOException e1) {
@@ -135,40 +163,69 @@ public class Klient {
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy hh:mm");
 		
-		System.out.println("Do you want to book a room? (y/n)");
-		String a;
+		String descr = null;
+		
+		System.out.println("Add a description");
 		try {
-			String a = br.readLine();
+			descr = br.readLine();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		String a = null;
+		System.out.println("Do you want to book a room? (y/n)");
+		try {
+			a = br.readLine();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		Date st = sdf.parse(date + " " + startTime);
-		Date et = sdf.parse(date + " " + endTime);
+		Date st = null;
+		try {
+			st = sdf.parse(date + " " + startTime);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Date et = null;
+		try {
+			et = sdf.parse(date + " " + endTime);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		switch (a){
-			case "n": p.createMeeting(st,et); // kan man bruke string her? Eller char?!
+			case "n": m = p.createMeeting(st,et, descr); // kan man bruke string her? Eller char?!
 			break;
 			
-			case "y": chooseRoom(st, et); 
-			
+			case "y": m = chooseRoom(st, et, descr); 		
 		
 	}
+		return m;
 	}
 		
-		public static void chooseRoom(Date st, Date et){
+		public static Meeting chooseRoom(Date st, Date et, String descr) throws IOException{
+			Meeting m = null;
 			ArrayList<Meetingroom> availableRooms =	p.generateAvailableRooms(st, et);
 			
 			if (availableRooms.size() == 0){
 				System.out.println("No room is available in your specified period. Do you want to try another period" +
 						"(type x), or do you just want to create meeting without roomreservation (type y)?");
-				String a = br.readLine();
+				String a = null;
+				try {
+					a = br.readLine();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				
 				switch(a){
-				case "x": p.createMeeting(st, et);
+				case "x": m = p.createMeeting(st, et, descr);
 				break;
-				case "y": createMeeting();
+				case "y": m = createMeeting();
 				}
 			}
 			
@@ -182,10 +239,11 @@ public class Klient {
 			System.out.println("/n Type a room number: ");
 			int i = in.nextInt();
 			
-			p.createMeeting(st, et, availableRooms.get(i));
+			m = p.createMeeting(st, et, descr, availableRooms.get(i));
 			
 			
 		}
+			return m;
 		}
 		
 		

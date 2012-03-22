@@ -68,6 +68,10 @@ public class Project implements PropertyChangeListener {
 		return (Person)personList.get(i);
 	}
 	
+	public ArrayList<Person> getPersonList(){
+		return personList;
+	}
+	
 	/**
 	 * Returns the index of the first occurrence of the specified object, or 
 	 * -1 if the list does not contain this object.
@@ -172,8 +176,6 @@ public class Project implements PropertyChangeListener {
 	public void propertyChange(PropertyChangeEvent event) {
 		propChangeSupp.firePropertyChange(event);
 	}
-	
-	public void createMeeting(Date startTime, Date endTime){}
 
 	/**
 	 * {@inheritDoc}
@@ -254,9 +256,15 @@ public class Project implements PropertyChangeListener {
 		return rooms;
 		
 	}
+	
+	public Meeting createMeeting(Date startTime, Date endTime, String description){
+		Meeting meeting = new Meeting(startTime, endTime, description, loggedInAs);
+		return meeting;
+	}
 
-	public void createMeeting(Date st, Date et, Meetingroom meetingroom) {
-		// TODO Auto-generated method stub
+	public Meeting createMeeting(Date st, Date et, String description, Meetingroom meetingroom) {
+		Meeting meeting = new Meeting(st, et, description, loggedInAs, meetingroom);
+		return meeting;
 		
 	}
 
