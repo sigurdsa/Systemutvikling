@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.Scanner;
 
 import no.ntnu.fp.model.Meeting;
+import no.ntnu.fp.model.Meetingrequest;
 import no.ntnu.fp.model.Meetingroom;
 import no.ntnu.fp.model.Person;
 import no.ntnu.fp.model.Project;;
@@ -98,7 +99,7 @@ public class Klient {
 		// og vise møtene der?
 		break;
 		
-		case 4: p.addPerson(p.showMeetingRequests());
+		case 4: p.showMeetingRequests();
 		break;
 		
 		case 0: p.logout();
@@ -124,19 +125,19 @@ public class Klient {
 			
 			int o = in.nextInt();
 			m.addParticipant(p.getPersonList().get(o)); 
+			Meetingrequest r = new Meetingrequest(m, p.getPersonList().get(o));
 			break;
+			
 		case "n": i = 1;  
 		break;
 		
 		default: System.out.println("WRONG ANSWER");
 
 		
-	}
+			}
 		}
 	}
 		
-
-
 
 	public static Meeting createMeeting() throws IOException{
 		Meeting m = null;

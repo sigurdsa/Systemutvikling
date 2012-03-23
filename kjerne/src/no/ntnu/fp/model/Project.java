@@ -273,9 +273,8 @@ public class Project implements PropertyChangeListener {
 		
 	}
 
-	public Person showMeetingRequests() {
+	public void showMeetingRequests() {
 		// TODO Auto-generated method stub
-		return null;
 	}
 
 	public void showCalendar() {

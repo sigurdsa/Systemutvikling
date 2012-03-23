@@ -3,6 +3,7 @@ package no.ntnu.fp.model;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -48,6 +49,10 @@ public class Person {
 	 * This member variable provides functionality for notifying of changes to
 	 * the <code>Group</code> class.
 	 */
+	
+	public ArrayList<Meetingrequest> meetingrequestList = new ArrayList<Meetingrequest>(); //lage en liste her i stedet?
+	// også ikke ha personobjekt i requestklassen?
+	
 	private PropertyChangeSupport propChangeSupp;
 	
 	/**
