@@ -286,6 +286,15 @@ public class Project implements PropertyChangeListener {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	public void sendMeetingRequests(Meeting m) {
+		for (int i = 0; i < m.getParticipants().size(); i++ ){
+			Meetingrequest mr = new Meetingrequest(m, m.getParticipants().get(i));
+			m.addMeetingrequest(mr);
+		}		
+	}
+	
+	
 	
 	
 }

@@ -13,6 +13,7 @@ import no.ntnu.fp.model.Meeting;
 import no.ntnu.fp.model.Meetingrequest;
 import no.ntnu.fp.model.Meetingroom;
 import no.ntnu.fp.model.Person;
+import no.ntnu.fp.model.AbstractAppointment;
 import no.ntnu.fp.model.Project;;
 
 public class Klient {
@@ -48,7 +49,6 @@ public class Klient {
 		try {
 			username = br.readLine();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -74,7 +74,7 @@ public class Klient {
 		System.out.println("***MENU***");
 		System.out.println("1.  Show my calendar");
 		System.out.println("2.  Create a new meeting");
-		System.out.println("3.  Show all meetings");
+		System.out.println("3.  Show all of your created meetings");
 		System.out.println("4.  Show meeting requests. You have got " + p.CountNewRequests() + " requests.");
 		System.out.println("0.  Log out");
 		
@@ -93,6 +93,7 @@ public class Klient {
 		
 		case 2: m = createMeeting();
 		addParticipants(0, m);
+		p.sendMeetingRequests(m);
 		break;
 		
 		case 3: p.showAllMeetings(); // vet ikke om dnne trenger å være her, skal man heller klikke seg inn på kalenderen
@@ -162,7 +163,9 @@ public class Klient {
 			e1.printStackTrace();
 		}
 		
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy hh:mm");
+		Date st = stringToDate(date, startTime);
+		Date et = stringToDate(date, endTime);
+
 		
 		String descr = null;
 		
@@ -183,20 +186,7 @@ public class Klient {
 			e.printStackTrace();
 		}
 		
-		Date st = null;
-		try {
-			st = sdf.parse(date + " " + startTime);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		Date et = null;
-		try {
-			et = sdf.parse(date + " " + endTime);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		
 		switch (a){
 			case "n": m = p.createMeeting(st,et, descr); // kan man bruke string her? Eller char?!
@@ -245,6 +235,45 @@ public class Klient {
 			
 		}
 			return m;
+		}
+		
+		public void changeMeeting(Meeting meeting) throws IOException{
+			System.out.println("New date");
+			String date = br.readLine();
+			
+			System.out.println("New start time");
+			String st = br.readLine();
+			Date startTime = stringToDate(date, st);
+			
+			meeting.setStartTime(startTime);
+			
+			System.out.println("New start time");
+			String et = br.readLine();
+			Date endTime = stringToDate(date, et);
+			
+			meeting.setEndTime(endTime);
+			
+			for (int i = 0; i)
+			
+			// Sletter vi de gamle requestene? Eller lager vi bare nye!?
+			
+			// må her også sende ut melding til de andre deltakerne!
+			
+		}
+		
+		public Date stringToDate(String date, String time){
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy hh:mm");
+			
+			Date c = null;
+			try {
+				c = sdf.parse(date + " " + time);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			return c;
+			
 		}
 		
 		

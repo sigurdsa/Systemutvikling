@@ -27,7 +27,7 @@ public class Meeting extends AbstractAppointment {
 	/**
 	 * Innkallelser
 	 */
-	private Meetingrequest meetingRequests;
+	private ArrayList<Meetingrequest> meetingRequests = new ArrayList<Meetingrequest>();
 	
 	/**
 	 * Konstruktør - Legg inn det som trengs
@@ -48,8 +48,12 @@ public class Meeting extends AbstractAppointment {
 		return meetingLeader;
 	}
 
-	public void setMeetingLeader(Person meetingLeader) {
-		this.meetingLeader = meetingLeader;
+	public void addMeetingrequest(Meetingrequest mr){
+		this.meetingRequests.add(mr);
+	}
+	
+	public ArrayList<Meetingrequest> getMeetingRequests(){
+		return this.meetingRequests;
 	}
 
 
