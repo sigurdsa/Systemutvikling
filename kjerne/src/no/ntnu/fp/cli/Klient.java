@@ -100,7 +100,7 @@ public class Klient {
 		// og vise møtene der?
 		break;
 		
-		case 4: p.showMeetingRequests();
+		case 4: showMeetingRequests();
 		break;
 		
 		case 0: p.logout();
@@ -112,6 +112,17 @@ public class Klient {
 		}
 	}
 	
+	private static void showMeetingRequests() {
+		for (int i = 0; i < loggedInAs.meetingrequstList().size(); i++){
+			if (!loggedInAs.meetingrequstList().get(i).hasAnswered)
+		}
+		// gå gjennom alle requester som ikke er svart på
+		// gi alternativ
+		// TODO Auto-generated method stub
+		
+	}
+
+
 	private static void addParticipants(int i, Meeting m) throws IOException {
 		while (i == 0) {
 		System.out.println("Would you like to add a participant? (y/n)");
@@ -127,6 +138,7 @@ public class Klient {
 			int o = in.nextInt();
 			m.addParticipant(p.getPersonList().get(o)); 
 			Meetingrequest r = new Meetingrequest(m, p.getPersonList().get(o));
+			p.getPersonList().get(o).
 			break;
 			
 		case "n": i = 1;  
@@ -253,13 +265,15 @@ public class Klient {
 			
 			meeting.setEndTime(endTime);
 			
-			for (int i = 0; i)
+			// setter requesten til usvart
+			for (int i = 0; i < meeting.getMeetingRequests().size(); i++){
+				meeting.getMeetingRequests().get(i).resetAnswer();
+			}
 			
-			// Sletter vi de gamle requestene? Eller lager vi bare nye!?
-			
-			// må her også sende ut melding til de andre deltakerne!
 			
 		}
+		
+		
 		
 		public Date stringToDate(String date, String time){
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy hh:mm");
@@ -268,7 +282,6 @@ public class Klient {
 			try {
 				c = sdf.parse(date + " " + time);
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			

@@ -63,4 +63,9 @@ public class Meetingrequest {
 	public boolean hasAnswered() {
 		return hasAnswered;
 	}
+	
+	public void resetAnswer(){
+		this.hasAnswered = false;
+		this.attending = false;
+	}
 }

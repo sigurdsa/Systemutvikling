@@ -6,6 +6,7 @@ import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import no.ntnu.fp.model.Meetingrequest;
 
 /**
  * The <code>Project</code> class is a list of zero or more {@link Person} objects.
@@ -232,6 +233,10 @@ public class Project implements PropertyChangeListener {
 		return false;
 	}
 	
+	public Person getLoggedInAs(){
+		return loggedInAs;
+	}
+	
 	/**
 	 * Logger brukeren ut, setter loggedInAs til null
 	 */
@@ -278,8 +283,30 @@ public class Project implements PropertyChangeListener {
 	}
 
 	public void showCalendar() {
-		// TODO Auto-generated method stub
+		System.out.println("Dato:	Tid: 	Hvor: ");
+		for (int i = 0; i < this.getMeetingRequestList().size(); i++){
+			if (loggedInAs.getMeetingRequestList().get(i).isAttending()){ 
+			}
+				printMeeting(loggedInAs.getMeetingRequestList().get(i).getMeeting());
+			}
+		}
 		
+		// her må det også være et alternativ å kunne vise andres kalendre!
+
+	
+	public String printMeeting(Meeting m){
+			
+		// her må Dateobjekt konverteres til en string
+		//OG! det må også sorteres i riktig rekkefølge...
+		// ha en metode som sorterer Meetingrequestlisten? 
+		
+		return null;
+		
+	}
+
+	private ArrayList<Person> getMeetingRequestList() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	public String CountNewRequests() {
@@ -292,6 +319,13 @@ public class Project implements PropertyChangeListener {
 			Meetingrequest mr = new Meetingrequest(m, m.getParticipants().get(i));
 			m.addMeetingrequest(mr);
 		}		
+	}
+	
+	public void cancelMeeting(Meeting meeting){
+		for (int i = 0; i < meeting.getMeetingRequests().size(); i++){
+			meeting.getMeetingRequests().get(i).setParticipant(null);
+		
+	}
 	}
 	
 	

@@ -50,8 +50,12 @@ public class Person {
 	 * the <code>Group</code> class.
 	 */
 	
-	public ArrayList<Meetingrequest> meetingrequestList = new ArrayList<Meetingrequest>(); //lage en liste her i stedet?
+	private ArrayList<Meetingrequest> meetingrequestList = new ArrayList<Meetingrequest>(); //lage en liste her i stedet?
 	// også ikke ha personobjekt i requestklassen?
+	
+	public  ArrayList<Meetingrequest> getMeetingRequestList(){
+		return meetingrequestList;
+	}
 	
 	private PropertyChangeSupport propChangeSupp;
 	
