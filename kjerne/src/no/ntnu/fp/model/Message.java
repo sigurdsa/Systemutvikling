@@ -7,7 +7,7 @@ public class Message {
 	private Person sender;
 	private ArrayList<Person> reciever;
 	private String text;
-	private boolean isRead;
+	private boolean isRead; // denne gir lite mening dersom vi lager en message for en liste..!
 	
 	
 	public Message(Person sender, ArrayList<Person> reciever, String text){

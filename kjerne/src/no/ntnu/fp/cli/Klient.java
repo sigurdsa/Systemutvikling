@@ -12,6 +12,7 @@ import java.util.Scanner;
 import no.ntnu.fp.model.Meeting;
 import no.ntnu.fp.model.Meetingrequest;
 import no.ntnu.fp.model.Meetingroom;
+import no.ntnu.fp.model.Message;
 import no.ntnu.fp.model.Person;
 import no.ntnu.fp.model.AbstractAppointment;
 import no.ntnu.fp.model.Project;;
@@ -98,7 +99,28 @@ public class Klient {
 		p.sendMeetingRequests(m);
 		break;
 		
-		case 3: p.showAllCreatedMeetings(); // 
+		case 3: p.showAllCreatedMeetings(); // må muligens returnere listen her.. 
+		System.out.println("Would you like to cancel a meeting? (y/n)");
+		String a = br.readLine();
+		
+		switch(a){
+		case "y": System.out.println("Which one? Type a number from the list above");
+		int i = in.nextInt();
+		cancelMeeting(//møte nr i); // ikke ferdig her.. Hvordan blir det med rekkfølge?! Sortert og sånn?
+		break;
+		
+		case "n": System.out.println("Would you like to change a meeting?");
+		a  = br.readLine();
+		if (a.equals("y")){
+			System.out.println("Which one? Type a number from the list above");
+			int j = in.nextInt();
+			changeMeeting(//møte nr j)); // feil her, kommer an på hvordan listen er.
+			break;
+		}
+		default: ;
+		
+		
+		}
 		break;
 		
 		case 4: showMeetingRequests();
@@ -285,9 +307,13 @@ public class Klient {
 			// setter requesten til usvart
 			for (int i = 0; i < meeting.getMeetingRequests().size(); i++){
 				meeting.getMeetingRequests().get(i).resetAnswer();
-			}
-			
-			
+			}	
+		}
+		
+		public void cancelMeeting(Meeting m) throws IOException{
+			System.out.println("Write an explanation for why the meeting was cancelled");
+			String a = br.readLine();
+			Message msg = new Message(p.getLoggedInAs(), m.getParticipants(), a);
 		}
 		
 		
