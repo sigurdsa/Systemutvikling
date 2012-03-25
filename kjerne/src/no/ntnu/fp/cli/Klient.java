@@ -73,6 +73,8 @@ public class Klient {
 	public static void mainMenu() throws IOException{
 		System.out.println("***MENU***");
 		System.out.println("1.  Show my calendar");
+		System.out.println("1.  Show everyones calendar"); // skal vi vise en og en eller alles samtidig!?
+		// blir vel litt vanskelig å vise alles samtidig.. eller?
 		System.out.println("2.  Create a new meeting");
 		System.out.println("3.  Show all of your created meetings");
 		System.out.println("4.  Show meeting requests. You have got " + p.CountNewRequests() + " requests.");
@@ -96,8 +98,7 @@ public class Klient {
 		p.sendMeetingRequests(m);
 		break;
 		
-		case 3: p.showAllMeetings(); // vet ikke om dnne trenger å være her, skal man heller klikke seg inn på kalenderen
-		// og vise møtene der?
+		case 3: p.showAllCreatedMeetings(); // 
 		break;
 		
 		case 4: showMeetingRequests();
@@ -112,9 +113,24 @@ public class Klient {
 		}
 	}
 	
-	private static void showMeetingRequests() {
-		for (int i = 0; i < loggedInAs.meetingrequstList().size(); i++){
-			if (!loggedInAs.meetingrequstList().get(i).hasAnswered)
+	// viser de requestene som innlogger ikke har svart på
+	private static void showMeetingRequests() throws IOException {
+		for (int i = 0; i < p.getLoggedInAs().getMeetingRequestList().size(); i++){
+			if (!p.getLoggedInAs().getMeetingRequestList().get(i).hasAnswered()){
+				//printe første møte bruke en tostringmetode . samme her som når man lister kalender?
+				// skal man se om det krasjer med noe fra før? EVt vise hele kalenderen?
+				System.out.println("Are you able to attend this meeting? (y / n / (any other letter if you don't want to answer yet");
+				String s = br.readLine();
+				switch(s){
+				case "n":  p.getLoggedInAs().getMeetingRequestList().get(i).setAttending(false);
+				break;
+				case "y": p.getLoggedInAs().getMeetingRequestList().get(i).setAttending(true);
+				break;
+				default:; // hva gjør jeg når jeg ikke vil at noe skal skje?
+				break;
+				}
+				
+			}
 		}
 		// gå gjennom alle requester som ikke er svart på
 		// gi alternativ
@@ -138,7 +154,8 @@ public class Klient {
 			int o = in.nextInt();
 			m.addParticipant(p.getPersonList().get(o)); 
 			Meetingrequest r = new Meetingrequest(m, p.getPersonList().get(o));
-			p.getPersonList().get(o).
+			p.getPersonList().get(o).getMeetingRequestList().add(r);
+			// er dette litt tungvindt?!
 			break;
 			
 		case "n": i = 1;  
@@ -212,19 +229,18 @@ public class Klient {
 		
 		public static Meeting chooseRoom(Date st, Date et, String descr) throws IOException{
 			Meeting m = null;
-			ArrayList<Meetingroom> availableRooms =	p.generateAvailableRooms(st, et);
+			
+			System.out.println("How many seats do you need?");
+			int nbr = in.nextInt();
+			
+			ArrayList<Meetingroom> availableRooms =	p.generateAvailableRooms(st, et, nbr);
 			
 			if (availableRooms.size() == 0){
 				System.out.println("No room is available in your specified period. Do you want to try another period" +
 						"(type x), or do you just want to create meeting without roomreservation (type y)?");
-				String a = null;
-				try {
-					a = br.readLine();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
 				
+				String a = br.readLine();
+					
 				switch(a){
 				case "x": m = p.createMeeting(st, et, descr);
 				break;
@@ -243,6 +259,7 @@ public class Klient {
 			int i = in.nextInt();
 			
 			m = p.createMeeting(st, et, descr, availableRooms.get(i));
+
 			
 			
 		}
@@ -275,7 +292,7 @@ public class Klient {
 		
 		
 		
-		public Date stringToDate(String date, String time){
+		public static Date stringToDate(String date, String time){
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy hh:mm");
 			
 			Date c = null;

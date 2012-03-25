@@ -3,7 +3,9 @@ package no.ntnu.fp.model;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import no.ntnu.fp.model.Meetingrequest;
@@ -58,6 +60,7 @@ public class Project implements PropertyChangeListener {
 		return personList.size();
 	}
 	
+	}
 	/**
 	 * Returns the {@link Person} object at the specified position in the list.
 	 * 
@@ -249,13 +252,13 @@ public class Project implements PropertyChangeListener {
 	 * @return 
 	 */
 	
-	public ArrayList<Meetingroom> generateAvailableRooms(Date start, Date end) {
+	public ArrayList<Meetingroom> generateAvailableRooms(Date start, Date end, int nbr) {
 		ArrayList<Meetingroom> rooms = new ArrayList<Meetingroom>();
 		Iterator itr = meetingRooms.iterator();
 		
 		while(itr.hasNext()) {
 			Meetingroom m = (Meetingroom) itr.next();
-			if (m.isFree(start,end)) rooms.add(m);
+			if (m.isFree(start,end) && m.getSeats() >= nbr) rooms.add(m);
 		}
 //
 		return rooms;
@@ -273,7 +276,7 @@ public class Project implements PropertyChangeListener {
 		
 	}
 
-	public void showAllMeetings() {
+	public void showAllCreatedMeetings() {
 		// TODO Auto-generated method stub
 		
 	}
@@ -284,6 +287,7 @@ public class Project implements PropertyChangeListener {
 
 	public void showCalendar() {
 		System.out.println("Dato:	Tid: 	Hvor: ");
+		// maa sortere liste!
 		for (int i = 0; i < this.getMeetingRequestList().size(); i++){
 			if (loggedInAs.getMeetingRequestList().get(i).isAttending()){ 
 			}
@@ -295,11 +299,14 @@ public class Project implements PropertyChangeListener {
 
 	
 	public String printMeeting(Meeting m){
-			
-		// her må Dateobjekt konverteres til en string
-		//OG! det må også sorteres i riktig rekkefølge...
-		// ha en metode som sorterer Meetingrequestlisten? 
 		
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm");
+		String startTime = formatter.format(m.getStartTime());
+		String endTime = formatter.format(m.getEndTime());
+		String room = m.getMeetingRoom().getName();
+		String descr = m.getDescription();
+		
+		return (startTime + "  " + endTime + "  " + room + "  " + descr);		
 		return null;
 		
 	}
