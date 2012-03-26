@@ -9,6 +9,7 @@ import java.util.Date;
  * 
  */
 public class Meeting extends AbstractAppointment {
+	private int id;
 	/**
 	 * Person møteleder
 	 */
@@ -44,6 +45,17 @@ public class Meeting extends AbstractAppointment {
 		this.meetingRoom = meetingRoom;
 	}
 	
+	/**
+	 * 
+	 * @param moteID
+	 * @param lederID
+	 * @param meetingRoomID
+	 */
+	public Meeting(String moteID, String string2, String string3) {
+		// TODO Auto-generated constructor stub
+		
+	}
+
 	public Person getMeetingLeader() {
 		return meetingLeader;
 	}

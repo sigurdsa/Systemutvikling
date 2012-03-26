@@ -20,5 +20,13 @@ public class TextSerializer {
 		return "" + p.getId() + ";" + p.getName() + ";" + p.getEmail() + ";" + p.getDateOfBirth().getYear() + "-" + ((p.getDateOfBirth().getMonth() < 10) ? ("0"+p.getDateOfBirth().getMonth()) : p.getDateOfBirth().getMonth())  + "-" + ((p.getDateOfBirth().getDate() < 10) ? ("0"+p.getDateOfBirth().getDate()) : p.getDateOfBirth().getDate())  + ";" + p.getUsername() + ";" + p.getPassword(); 
 	}
 	
-	public Meeting
+	/**
+	 * 
+	 * @param text - moteID, LederID, meetingRoomID
+	 * @return
+	 */
+	public Meeting textToMeeting(String text) {
+		String[] liste = text.split(";");
+		return new Meeting(liste[0], liste[1],liste[2]);
+	}
 }
