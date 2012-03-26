@@ -31,8 +31,11 @@ public class TextSerializer {
 	}
 	
 	public String meetingToText(Meeting m) {
-		return "" + m.getID();
-		return null;
-		
+		return "" + m.getId() + ";" + m.getMeetingLeader().getId() + ";" + m.getMeetingRoom().getId();
+	}
+	
+	public Meetingroom textToMeetingroom(String text) {
+		String[] liste = text.split(";");
+		//return new Meetingroom();
 	}
 }

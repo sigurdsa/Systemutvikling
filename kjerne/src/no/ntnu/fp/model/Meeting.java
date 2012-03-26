@@ -34,16 +34,12 @@ public class Meeting extends AbstractAppointment {
 	 * Konstruktør - Legg inn det som trengs
 	 */
 	
-	public Meeting(Date startTime, Date endTime, String description, Person meetingLeader) {
-		super(startTime, endTime, description);
+	public Meeting(int id, Date startTime, Date endTime, String description, Person meetingLeader) {
+		super(id,startTime, endTime, description);
 		this.meetingLeader = meetingLeader;
 	}
 	
-	public Meeting(Date startTime, Date endTime, String description, Person meetingLeader, Meetingroom meetingRoom) {
-		super(startTime, endTime, description);
-		this.meetingLeader = meetingLeader;
-		this.meetingRoom = meetingRoom;
-	}
+
 	
 	/**
 	 * 
@@ -51,9 +47,18 @@ public class Meeting extends AbstractAppointment {
 	 * @param lederID
 	 * @param meetingRoomID
 	 */
-	public Meeting(String moteID, String string2, String string3) {
-		// TODO Auto-generated constructor stub
-		
+	public Meeting(int id,String moteID, Person meetingLeader, Meetingroom meetingRoom, Date startTime, Date endTime, String description) {
+		super(id, startTime,endTime,description);
+		this.meetingLeader = meetingLeader;
+		this.meetingRoom = meetingRoom;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public Person getMeetingLeader() {
