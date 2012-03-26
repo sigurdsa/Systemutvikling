@@ -101,29 +101,7 @@ public class Klient {
 		break;
 		
 		// viser alle møter som bruker har opprettet
-		case 4: ArrayList<Meeting> a = p.showAllCreatedMeetings();
-		
-		System.out.println("Would you like to cancel a meeting? (y/n)");
-		String a = br.readLine();
-
-		switch(a){
-		case "y": System.out.println("Which one? Type a number from the list above");
-		int i = in.nextInt();
-		cancelMeeting(//møte nr i); // ikke ferdig her.. Hvordan blir det med rekkfølge?! Sortert og sånn?
-				break;
-
-		case "n": System.out.println("Would you like to change a meeting?");
-		a  = br.readLine();
-		if (a.equals("y")){
-			System.out.println("Which one? Type a number from the list above");
-			int j = in.nextInt();
-			changeMeeting(//møte nr j)); // feil her, kommer an på hvordan listen er.
-					break;
-		}
-		default: ;
-
-
-		}
+		case 4: showAllCreatedMeetings();
 		break;
 
 		case 5: showMeetingRequests();
@@ -136,6 +114,33 @@ public class Klient {
 		break;
 
 		}
+	}
+
+	private static void showAllCreatedMeetings() {
+		ArrayList<Meeting> l = p.showAllCreatedMeetings();
+		
+		System.out.println("Would you like to cancel a meeting? (y/n)");
+		String a = br.readLine();
+
+		switch(a){
+		case "y": System.out.println("Which one? Type a number from the list above");
+		int i = in.nextInt();
+		cancelMeeting(l.get(i));
+		showAllCreatedMeetings();
+		break;
+
+		case "n": System.out.println("Would you like to change a meeting?");
+		a  = br.readLine();
+		if (a.equals("y")){
+			System.out.println("Which one? Type a number from the list above");
+			int j = in.nextInt();
+			changeMeeting(l.get(j)); 
+					break;
+		}
+		default: ;
+
+
+		
 	}
 
 	public void showCalendar(Person p, int week){
@@ -190,10 +195,8 @@ public class Klient {
 				m.getMeetingRequests().add(r);
 				break;
 
-			case "n": i = 1;  
+			default: i = 1;
 			break;
-
-			default: System.out.println("WRONG ANSWER");
 
 
 			}
@@ -207,50 +210,22 @@ public class Klient {
 		String date = br.readLine();
 
 		System.out.println("Type start time (hh:mm): ");
-		String startTime = null;
-		try {
-			startTime = br.readLine();
-		} catch (IOException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		}
+		String startTime = br.readLine();
 
 		System.out.println("Type end time (hh:mm): ");
-		String endTime = null;
-		try {
-			endTime = br.readLine();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
+		String endTime = br.readLine();
+	
 		Date st = stringToDate(date, startTime);
 		Date et = stringToDate(date, endTime);
 
-
-		String descr = null;
-
 		System.out.println("Add a description");
-		try {
-			descr = br.readLine();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		String descr = br.readLine();
 
-		String a = null;
 		System.out.println("Do you want to book a room? (y/n)");
-		try {
-			a = br.readLine();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-
-
+		String a = br.readLine();
+	
 		switch (a){
-		case "n": m = p.createMeeting(st,et, descr); // kan man bruke string her? Eller char?!
+		case "n": m = p.createMeeting(st,et, descr); 
 		break;
 
 		case "y": m = chooseRoom(st, et, descr); 		
@@ -259,6 +234,7 @@ public class Klient {
 		return m;
 	}
 
+	
 	public static Meeting chooseRoom(Date st, Date et, String descr) throws IOException{
 		Meeting m = null;
 
@@ -296,7 +272,7 @@ public class Klient {
 		return m;
 	}
 
-	public void changeMeeting(Meeting meeting) throws IOException{
+	public static void changeMeeting(Meeting meeting) throws IOException{
 		System.out.println("New date");
 		String date = br.readLine();
 
@@ -315,17 +291,21 @@ public class Klient {
 		// setter requesten til usvart
 		for (int i = 0; i < meeting.getMeetingRequests().size(); i++){
 			meeting.getMeetingRequests().get(i).resetAnswer();
-		}	
+		}
+		
+		// her må det gjøres noe i forhold til rom!! Er det allerede booket et, i så fall, beholde det samme, eller booke et nytt?
+		// må også være et alternativ i forhold til å legge til flere deltakere.
+		
+		showAllCreatedMeetings();
 	}
 
-	public void cancelMeeting(Meeting m) throws IOException{
+	public static void cancelMeeting(Meeting m) throws IOException{
 		System.out.println("Write an explanation for why the meeting was cancelled");
 		String a = br.readLine();
 		Message msg = new Message(p.getLoggedInAs(), m.getParticipants(), a);
-		// egentlig.. Må vi lage en melding for alle deltakere om vi skal sjekke om den er sett! Eks nye meldinger.
+		// her må det gjøres noe i forhold til meldinger.
+		//Møtet må også bli slettet fra alle lister!!! How to do it? Dvs alle møteromslistene, samt alle requester møte inngår i. 
 	}
-
-
 
 	public static Date stringToDate(String date, String time){
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy hh:mm");
@@ -340,7 +320,4 @@ public class Klient {
 		return c;
 
 	}
-
-
-	// hva gjør vi her om det krasjer med noe du allerede har ikalenderen din?
 }
