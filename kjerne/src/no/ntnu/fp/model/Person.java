@@ -43,7 +43,7 @@ public class Person {
 	/**
 	 * This member variable holds a unique identifier for this object.
 	 */
-	private long id;
+	private int id;
 	
 	/**
 	 * This member variable provides functionality for notifying of changes to
@@ -118,6 +118,16 @@ public class Person {
 		this.dateOfBirth = dateOfBirth;
 	}
 	
+	public Person(String id, String name, String email, String dateOfBirth, String username, String password) {
+		 this();
+		 this.name = name;
+		 this.email = email;
+		 this.id = Integer.parseInt(id);
+		 this.dateOfBirth = new Date(Integer.parseInt(dateOfBirth.substring(0, 3), Integer.parseInt(dateOfBirth.substring(5,6), Integer.parseInt(dateOfBirth.substring(7,8)))));
+		 this.username = username;
+		 this.password = password;
+	}
+
 	/**
 	 * Assigns a new name to the person.<P>
 	 * 
@@ -250,7 +260,7 @@ public class Person {
 	 * 
 	 * @return The person's unique identification.
 	 */
-	public long getId() {
+	public int getId() {
 		return id;
 	}
 
