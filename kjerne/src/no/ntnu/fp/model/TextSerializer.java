@@ -29,4 +29,10 @@ public class TextSerializer {
 		String[] liste = text.split(";");
 		return new Meeting(liste[0], liste[1],liste[2]);
 	}
+	
+	public String meetingToText(Meeting m) {
+		return "" + m.getID();
+		return null;
+		
+	}
 }
