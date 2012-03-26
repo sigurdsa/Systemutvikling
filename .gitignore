@@ -1,5 +1,6 @@
 .metadata
-.logfile
+logfile.txt
+metrocode/Log/
 
 # Compiled source #
 ###################
