@@ -6,6 +6,16 @@ import java.util.Date;
 
 public class Meetingroom {
 	private int id;
+	private String name;
+	private int seats;
+	private ArrayList<Meeting>	meetings = new ArrayList<Meeting>();
+	
+	public Meetingroom(String name, int seats) {
+		this.name = name;
+		this.seats = seats;		
+	}
+	
+
 	public int getId() {
 		return id;
 	}
@@ -15,19 +25,8 @@ public class Meetingroom {
 		this.id = id;
 	}
 
-	private String name;
-	private int seats;
-	
-	public Meetingroom(String name, int seats) {
-		this.name = name;
-		this.seats = seats;		
-	}
-	
-	private ArrayList<Meeting>	meetings = new ArrayList<Meeting>();
-	
 	public void addMeetingToList(Meeting m){
 		meetings.add(m);
-
 		Collections.sort(meetings, new CustomComparator());
 	}
 	

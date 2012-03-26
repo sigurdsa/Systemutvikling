@@ -110,7 +110,6 @@ public class Person {
 		name = "";
 		email = "";
 		dateOfBirth = new Date();
-		id = System.currentTimeMillis();
 		propChangeSupp = new PropertyChangeSupport(this);
 	}
 	

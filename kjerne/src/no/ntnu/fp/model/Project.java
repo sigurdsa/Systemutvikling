@@ -19,18 +19,41 @@ import no.ntnu.fp.model.Meetingrequest;
  */
 public class Project implements PropertyChangeListener {
 
-	/**
-	 * The member variable storing all registered {@link Person} objects.
-	 */
+
 	private ArrayList<Person> personList;
-	
-	/**
-	 * Alle møterom er lagret her
-	 */
 	private ArrayList<Meetingroom> meetingRooms;
+	private ArrayList<Meeting> meetings;
 	
-	private ArrayList<Meeting> meetings = new ArrayList<Meeting>();
+	private PropertyChangeSupport propChangeSupp;
 	
+	Person loggedInAs = null;
+	
+	public Project() {
+		personList = new ArrayList<Person>();
+		meetingRooms = new ArrayList<Meetingroom>();
+		meetings = new ArrayList<Meeting>();
+		propChangeSupp = new java.beans.PropertyChangeSupport(this);
+	}
+	
+	public int getObjectId (ArrayList liste){
+		Iterator itr = liste.iterator();
+		int id = 1;
+		while(itr.hasNext()) {
+			Object o = itr.next();
+			if (o instanceof Person) {
+				Person p = (Person) o;
+				if (id < p.getId()) id = p.getId();
+			} else if (o instanceof Meeting) {
+				Meeting m = (Meeting) o;
+				if (id < m.getId()) id = m.getId();
+			} else if (o instanceof Meetingroom) {
+				Meetingroom m = (Meetingroom) o;
+				if (id < m.getId()) id = m.getId();
+			}
+		}
+		return id;
+	}
+
 	public void addToMeetings(Meeting m){
 		meetings.add(m);
 	}
@@ -38,27 +61,7 @@ public class Project implements PropertyChangeListener {
 	public void addToMeetingRoomsList(Meetingroom mr){
 		meetingRooms.add(mr);
 	}
-	/**
-	 * This member variable provides functionality for notifying of changes to
-	 * the <code>Project</code> class.
-	 */
-	private PropertyChangeSupport propChangeSupp;
 	
-	/**
-	 * Innlogget som
-	 */
-
-	Person loggedInAs = null;
-	
-	/**
-	 * Default constructor.  Must be called to initialise the object's member variables.
-	 *
-	 */
-	public Project() {
-		personList = new java.util.ArrayList();
-		propChangeSupp = new java.beans.PropertyChangeSupport(this);
-	}
-
 	/**
 	 * Returns the number of {@linkplain #addPerson(Person) <code>Person</code> objects
 	 * registered} with this class.
@@ -351,6 +354,16 @@ public class Project implements PropertyChangeListener {
 			meeting.getMeetingRequests().get(i).setParticipant(null);
 		
 		}
+	}
+
+	public Person getPersonById(int parseInt) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Meetingroom getMeetingroomById(int parseInt) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

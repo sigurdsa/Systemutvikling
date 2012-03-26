@@ -10,44 +10,17 @@ import java.util.Date;
  */
 public class Meeting extends AbstractAppointment {
 	private int id;
-	/**
-	 * Person møteleder
-	 */
 	private Person meetingLeader;
-
-	/**
-	 * Møterom 
-	 */
 	private Meetingroom meetingRoom;
-	
-	/**
-	 * Deltakere
-	 */
 	private ArrayList<Person> participants = new ArrayList<Person>();
-	
-	/**
-	 * Innkallelser
-	 */
 	private ArrayList<Meetingrequest> meetingRequests = new ArrayList<Meetingrequest>();
-	
-	/**
-	 * Konstruktør - Legg inn det som trengs
-	 */
 	
 	public Meeting(int id, Date startTime, Date endTime, String description, Person meetingLeader) {
 		super(id,startTime, endTime, description);
 		this.meetingLeader = meetingLeader;
 	}
-	
 
-	
-	/**
-	 * 
-	 * @param moteID
-	 * @param lederID
-	 * @param meetingRoomID
-	 */
-	public Meeting(int id,String moteID, Person meetingLeader, Meetingroom meetingRoom, Date startTime, Date endTime, String description) {
+	public Meeting(int id, Person meetingLeader, Meetingroom meetingRoom, Date startTime, Date endTime, String description) {
 		super(id, startTime,endTime,description);
 		this.meetingLeader = meetingLeader;
 		this.meetingRoom = meetingRoom;
