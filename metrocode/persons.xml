@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<group>
+	<person>
+		<name>Hallvard Trætteberg</name>
+		<email>hal@idi.ntnu.no</email>
+		<date-of-birth>Nov 16, 1966</date-of-birth>
+	</person>
+	<person>
+		<name>Thomas Østerlie</name>
+		<email>thomasos@idi.ntnu.no</email>
+		<date-of-birth>Apr 30, 1973</date-of-birth>
+	</person>
+	<person>
+		<name>Eric Monteiro</name>
+		<email>ericm@idi.ntnu.no</email>
+		<date-of-birth>Aug 10, 1865</date-of-birth>
+	</person>
+</group>
