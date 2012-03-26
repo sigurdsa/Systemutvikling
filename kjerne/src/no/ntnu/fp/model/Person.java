@@ -4,6 +4,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 
 /**
@@ -50,8 +51,18 @@ public class Person {
 	 * the <code>Group</code> class.
 	 */
 	
-	private ArrayList<Meetingrequest> meetingrequestList = new ArrayList<Meetingrequest>(); //lage en liste her i stedet?
-	// også ikke ha personobjekt i requestklassen?
+	private ArrayList<Meeting> calendar = new ArrayList<Meeting>();
+	
+	public ArrayList<Meeting> getCalendar(){
+		return calendar;
+	}
+	
+	public void addMeetingToCalendar(Meeting m){
+		calendar.add(m);
+		Collections.sort(calendar, new CustomComparator());
+	}
+	
+	private ArrayList<Meetingrequest> meetingrequestList = new ArrayList<Meetingrequest>(); 
 	
 	public  ArrayList<Meetingrequest> getMeetingRequestList(){
 		return meetingrequestList;

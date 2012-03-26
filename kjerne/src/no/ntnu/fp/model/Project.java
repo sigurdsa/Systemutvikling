@@ -29,6 +29,15 @@ public class Project implements PropertyChangeListener {
 	 */
 	private ArrayList<Meetingroom> meetingRooms;
 	
+	private ArrayList<Meeting> meetings = new ArrayList<Meeting>();
+	
+	public void addToMeetings(Meeting m){
+		meetings.add(m);
+	}
+	
+	public void addToMeetingRoomsList(Meetingroom mr){
+		meetingRooms.add(mr);
+	}
 	/**
 	 * This member variable provides functionality for notifying of changes to
 	 * the <code>Project</code> class.
@@ -60,7 +69,6 @@ public class Project implements PropertyChangeListener {
 		return personList.size();
 	}
 	
-	}
 	/**
 	 * Returns the {@link Person} object at the specified position in the list.
 	 * 
@@ -251,7 +259,11 @@ public class Project implements PropertyChangeListener {
 	 * Genererer en liste med møterom som er ledig i den gitte tidsperioden
 	 * @return 
 	 */
-	
+	public int generateWeekNumber(Date d){
+		@SuppressWarnings("deprecation")
+		int wn = (d.getMonth() * 30 - 30 + d.getDate()) / 7;
+		return wn;
+	}
 	public ArrayList<Meetingroom> generateAvailableRooms(Date start, Date end, int nbr) {
 		ArrayList<Meetingroom> rooms = new ArrayList<Meetingroom>();
 		Iterator itr = meetingRooms.iterator();
@@ -267,37 +279,39 @@ public class Project implements PropertyChangeListener {
 	
 	public Meeting createMeeting(Date startTime, Date endTime, String description){
 		Meeting meeting = new Meeting(startTime, endTime, description, loggedInAs);
+		meetings.add(meeting);
 		return meeting;
 	}
 
 	public Meeting createMeeting(Date st, Date et, String description, Meetingroom meetingroom) {
 		Meeting meeting = new Meeting(st, et, description, loggedInAs, meetingroom);
+		meetings.add(meeting);
 		return meeting;
 		
 	}
 
-	public void showAllCreatedMeetings() {
-		// TODO Auto-generated method stub
+	public ArrayList<Meeting> showAllCreatedMeetings() {
+		ArrayList<Meeting> createdMeetings = new ArrayList<Meeting>();
+		for(int i = 0; i < meetings.size(); i++){
+			if(meetings.get(i).getMeetingLeader().equals(loggedInAs)){
+				createdMeetings.add(meetings.get(i));
+			}
+		}
+		return createdMeetings;
+		
 		
 	}
 
-	public void showMeetingRequests() {
-		// TODO Auto-generated method stub
-	}
 
-	public void showCalendar(Person p) {
-		System.out.println("Dato:	Tid: 	Hvor: ");
-		// maa sortere liste!
-		for (int i = 0; i < this.getMeetingRequestList().size(); i++){
-			if (p.getMeetingRequestList().get(i).isAttending()){ 
-			}
-				printMeeting(loggedInAs.getMeetingRequestList().get(i).getMeeting());
+	public void showCalendar(Person p, int week) {
+		System.out.println("You are now looking at " + p.getName() + "'s calendar. Week number");
+		System.out.println("Dato:	Tid: 	Hvor: 	Beskrivelse:");
+		for (int i = 0; i < p.getCalendar().size(); i++){
+				printMeeting(p.getCalendar().get(i));
 			}
 		}
 		
-		// her må det også være et alternativ å kunne vise andres kalendre!
 
-	
 	public String printMeeting(Meeting m){
 		
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm");
@@ -307,7 +321,6 @@ public class Project implements PropertyChangeListener {
 		String descr = m.getDescription();
 		
 		return (startTime + "  " + endTime + "  " + room + "  " + descr);		
-		return null;
 		
 	}
 
@@ -316,9 +329,14 @@ public class Project implements PropertyChangeListener {
 		return null;
 	}
 
-	public String CountNewRequests() {
-		// TODO Auto-generated method stub
-		return null;
+	public int CountNewRequests() {
+		int c = 0;
+		for ( int i = 0; i < loggedInAs.getMeetingRequestList().size(); i++){
+			if (!loggedInAs.getMeetingRequestList().get(i).hasAnswered()){
+				c += 1;
+				}
+		}
+		return c;
 	}
 
 	public void sendMeetingRequests(Meeting m) {
@@ -332,10 +350,7 @@ public class Project implements PropertyChangeListener {
 		for (int i = 0; i < meeting.getMeetingRequests().size(); i++){
 			meeting.getMeetingRequests().get(i).setParticipant(null);
 		
+		}
 	}
-	}
-	
-	
-	
 	
 }
