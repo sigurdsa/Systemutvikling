@@ -1,0 +1,71 @@
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/svn/!svn/ver/91/trunk/src/no/ntnu/fp/su
+END
+MainControl.java
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/88/trunk/src/no/ntnu/fp/su/MainControl.java
+END
+TestSU.java
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/88/trunk/src/no/ntnu/fp/su/TestSU.java
+END
+LogGenerator.java
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/91/trunk/src/no/ntnu/fp/su/LogGenerator.java
+END
+Sensor.java
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/2/trunk/src/no/ntnu/fp/su/Sensor.java
+END
+Battery.java
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/2/trunk/src/no/ntnu/fp/su/Battery.java
+END
+XmlSerializer.java
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/73/trunk/src/no/ntnu/fp/su/XmlSerializer.java
+END
+LocalControl.java
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/95/trunk/src/no/ntnu/fp/su/LocalControl.java
+END
+LACinfo.java
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/26/trunk/src/no/ntnu/fp/su/LACinfo.java
+END
+AlarmUnit.java
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/2/trunk/src/no/ntnu/fp/su/AlarmUnit.java
+END
+Constants.java
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/49/trunk/src/no/ntnu/fp/su/Constants.java
+END
+StartLac.java
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/85/trunk/src/no/ntnu/fp/su/StartLac.java
+END

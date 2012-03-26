@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 26
+/svn/!svn/ver/15/trunk/lib
+END
+derbyclient.jar
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/!svn/ver/15/trunk/lib/derbyclient.jar
+END
+derby.jar
+K 25
+svn:wc:ra_dav:version-url
+V 36
+/svn/!svn/ver/14/trunk/lib/derby.jar
+END
+xom-1.0b5.jar
+K 25
+svn:wc:ra_dav:version-url
+V 39
+/svn/!svn/ver/4/trunk/lib/xom-1.0b5.jar
+END
+ktn_admin_and_a2.jar
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/9/trunk/lib/ktn_admin_and_a2.jar
+END
+junit.jar
+K 25
+svn:wc:ra_dav:version-url
+V 35
+/svn/!svn/ver/4/trunk/lib/junit.jar
+END
+jdom.jar
+K 25
+svn:wc:ra_dav:version-url
+V 34
+/svn/!svn/ver/9/trunk/lib/jdom.jar
+END
+jlfgr-1_0.jar
+K 25
+svn:wc:ra_dav:version-url
+V 39
+/svn/!svn/ver/4/trunk/lib/jlfgr-1_0.jar
+END

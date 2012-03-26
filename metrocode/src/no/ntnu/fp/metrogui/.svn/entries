@@ -1,0 +1,52 @@
+8
+
+dir
+92
+https://metrocode.googlecode.com/svn/trunk/src/no/ntnu/fp/metrogui
+https://metrocode.googlecode.com/svn
+
+
+
+2009-05-02T11:51:17.714335Z
+88
+chr.askeland
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+bc0e0ff2-2e7a-11de-ba44-d58fe8a9ce33
+
+LACGui.java
+file
+95
+
+
+
+2009-05-05T14:54:16.000000Z
+6a66cd2d9d92499e8f6c13367e9dac73
+2009-05-05T14:57:51.809666Z
+95
+asmundto
+
+MACGui.java
+file
+95
+
+
+
+2009-05-05T14:54:26.000000Z
+86d44b6db6139899ba71bf6d0268d6b3
+2009-05-05T14:57:51.809666Z
+95
+asmundto
+

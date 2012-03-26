@@ -1,0 +1,49 @@
+<project name="fellesprosjekt" default="compile" basedir=".">
+
+   <target name="init">
+      <tstamp/>
+      <property name="lib" value="lib" />
+      <property name="build" value="build" />
+      <property name="src"  value="src" />
+      <property name="doc" value="doc" />
+      <filter token="year" value="2005" />
+      <path id="lib.path">
+         <pathelement path="${classpath}"/>
+         <fileset dir="lib">
+            <include name="**/*.jar"/>
+         </fileset>
+         <pathelement location="${build}"/>
+      </path>
+   </target>
+
+   <target name="prepare" depends="init">
+      <mkdir dir="${build}" />
+      <mkdir dir="${doc}" />
+   </target>
+
+   <target name="clean" depends="init">
+      <delete dir="${build}" />
+      <delete dir="${doc}" />
+   </target>
+
+   <target name="compile" depends="prepare">
+      <javac srcdir="${src}"
+	     destdir="${build}"
+	     debug="on"
+
+	     deprecation="off"
+	     executable="${build}">
+         <classpath refid="lib.path" />
+      </javac>
+   </target>
+
+
+   <target name="doc" depends="init">
+      <javadoc packagenames="no.ntnu.fp.*"
+               sourcepath="${src}"
+               destdir="${doc}" />
+   </target>
+
+</project>
+
+
