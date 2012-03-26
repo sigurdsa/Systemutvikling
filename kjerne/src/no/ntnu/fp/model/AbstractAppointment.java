@@ -3,12 +3,13 @@ package no.ntnu.fp.model;
 import java.util.Date;
 
 public abstract class AbstractAppointment {
-	
+	private int id;
 	private Date startTime;
 	private Date endTime;
 	private String description;
 	
-	public AbstractAppointment(Date startTime, Date endTime, String description){
+	public AbstractAppointment(int id,Date startTime, Date endTime, String description){
+		this.id = id;
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.description = description;

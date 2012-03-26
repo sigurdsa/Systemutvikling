@@ -5,6 +5,16 @@ import java.util.Collections;
 import java.util.Date;
 
 public class Meetingroom {
+	private int id;
+	public int getId() {
+		return id;
+	}
+
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	private String name;
 	private int seats;
 	
