@@ -74,8 +74,7 @@ public class Klient {
 	public static void mainMenu() throws IOException{
 		System.out.println("***MENU***");
 		System.out.println("1.  Show my calendar");
-		System.out.println("1.  Show everyones calendar"); // skal vi vise en og en eller alles samtidig!?
-		// blir vel litt vanskelig å vise alles samtidig.. eller?
+		System.out.println("1.  Show an other persons calendar"); 
 		System.out.println("2.  Create a new meeting");
 		System.out.println("3.  Show all of your created meetings");
 		System.out.println("4.  Show meeting requests. You have got " + p.CountNewRequests() + " requests.");
@@ -91,15 +90,26 @@ public class Klient {
 		
 		Meeting m;
 		switch (menuCounter){
-		case 1: p.showCalendar();
+		case 1: p.showCalendar(p.getLoggedInAs());
 		break;
 		
-		case 2: m = createMeeting();
+		case 2: System.out.println("Choose one of the following persons"); // skal vi ta vekk dem som allerede er med på prosjektet??!
+		for (int j = 0; j < p.getPersonList().size(); j++){
+			System.out.println(j + ".  " + p.getPersonList().get(j));
+		}
+		
+		int i = in.nextInt();
+		
+		p.showCalendar(p.getPersonList().get(i));
+		
+		
+		
+		case 3: m = createMeeting();
 		addParticipants(0, m);
 		p.sendMeetingRequests(m);
 		break;
 		
-		case 3: p.showAllCreatedMeetings(); // må muligens returnere listen her.. 
+		case 4: p.showAllCreatedMeetings(); // må muligens returnere listen her.. 
 		System.out.println("Would you like to cancel a meeting? (y/n)");
 		String a = br.readLine();
 		
@@ -123,7 +133,7 @@ public class Klient {
 		}
 		break;
 		
-		case 4: showMeetingRequests();
+		case 5: showMeetingRequests();
 		break;
 		
 		case 0: p.logout();
@@ -280,10 +290,8 @@ public class Klient {
 			System.out.println("/n Type a room number: ");
 			int i = in.nextInt();
 			
-			m = p.createMeeting(st, et, descr, availableRooms.get(i));
-
-			
-			
+			m = p.createMeeting(st, et, descr, availableRooms.get(i));	
+			availableRooms.get(i).addMeetingToList(m);
 		}
 			return m;
 		}
@@ -314,6 +322,7 @@ public class Klient {
 			System.out.println("Write an explanation for why the meeting was cancelled");
 			String a = br.readLine();
 			Message msg = new Message(p.getLoggedInAs(), m.getParticipants(), a);
+			// egentlig.. Må vi lage en melding for alle deltakere om vi skal sjekke om den er sett! Eks nye meldinger.
 		}
 		
 		

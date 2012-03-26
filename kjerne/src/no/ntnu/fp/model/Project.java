@@ -285,11 +285,11 @@ public class Project implements PropertyChangeListener {
 		// TODO Auto-generated method stub
 	}
 
-	public void showCalendar() {
+	public void showCalendar(Person p) {
 		System.out.println("Dato:	Tid: 	Hvor: ");
 		// maa sortere liste!
 		for (int i = 0; i < this.getMeetingRequestList().size(); i++){
-			if (loggedInAs.getMeetingRequestList().get(i).isAttending()){ 
+			if (p.getMeetingRequestList().get(i).isAttending()){ 
 			}
 				printMeeting(loggedInAs.getMeetingRequestList().get(i).getMeeting());
 			}

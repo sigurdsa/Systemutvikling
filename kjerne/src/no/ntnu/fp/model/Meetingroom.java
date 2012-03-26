@@ -1,5 +1,7 @@
 package no.ntnu.fp.model;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 
 public class Meetingroom {
@@ -10,10 +12,27 @@ public class Meetingroom {
 		this.name = name;
 		this.seats = seats;		
 	}
+	
+	private ArrayList<Meeting>	meetings = new ArrayList<Meeting>();
+	
+	public void addMeetingToList(Meeting m){
+		meetings.add(m);
+
+		Collections.sort(meetings, new CustomComparator());
+	}
+	
 
 	public boolean isFree(Date start, Date end) {
-		// TODO Auto-generated method stub
-		return false;
+		int r1;
+		int r2;
+		for(int i = 0; i < meetings.size(); i++){
+			r1 = (meetings.get(i)).getStartTime().compareTo(end);
+			r2 = (meetings.get(i)).getEndTime().compareTo(start);
+			if (!(r2 <0 || r1 > 0 )){
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public String getName() {
