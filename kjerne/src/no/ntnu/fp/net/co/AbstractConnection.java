@@ -72,6 +72,7 @@ public abstract class AbstractConnection implements Connection {
      */
     private List<KtnDatagram> externalQueue;
 
+    
     /**
      * Identifies the state of the connection.
      */
@@ -206,6 +207,7 @@ public abstract class AbstractConnection implements Connection {
      * @see ClSocket#send(KtnDatagram)
      */
     protected synchronized void simplySendPacket(KtnDatagram packet) throws ClException, IOException {
+    	lastDataPacketSent = packet;
         new ClSocket().send(packet);
     }
 
@@ -283,6 +285,7 @@ public abstract class AbstractConnection implements Connection {
         boolean sent = false;
     
         KtnDatagram ackToSend = constructInternalPacket(synAck ? Flag.SYN_ACK : Flag.ACK);
+        lastDataPacketSent = ackToSend;
         ackToSend.setAck(packetToAck.getSeq_nr());
     
         // Send the ack, trying at most `tries' times.
@@ -448,6 +451,8 @@ public abstract class AbstractConnection implements Connection {
     
                         synchronized (this) {
                             synchronized (this) {
+                            	System.out.println("------------------------------------------------Prøver redding");
+                            	sendAck(lastValidPacketReceived, false); //du mottar data når du venter på ack, ikke bra. Acker forrige mottatte pakke i tilfelle andre part ikke har fått med seg at den var mottatt
                                 externalQueue.add(incomingPacket);
                                 notifyAll();
                             }
@@ -642,7 +647,13 @@ public abstract class AbstractConnection implements Connection {
 
                     synchronized (this) {
                         synchronized (this) {
+                        	if (incomingPacket.getSeq_nr() == lastValidPacketReceived.getSeq_nr()) {
+                        		System.out.println("----------------------------------------------------------Prøver redding");
+                        	sendAck(lastValidPacketReceived, false); //Acker forrige mottatte pakke i tilfelle andre part ikke har fått med seg at den var mottatt
+                    	} 
+                        else {
                             externalQueue.add(incomingPacket);
+                        }
                             notifyAll();
                         }
                     }

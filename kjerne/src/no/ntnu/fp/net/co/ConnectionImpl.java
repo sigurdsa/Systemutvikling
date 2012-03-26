@@ -38,7 +38,6 @@ public class ConnectionImpl extends AbstractConnection {
 
     /** Keeps track of the used ports for each server port. */
     private static Map<Integer, Boolean> usedPorts = Collections.synchronizedMap(new HashMap<Integer, Boolean>());
-
     /**
      * Initialise initial sequence number and setup state machine.
      * 
@@ -46,7 +45,10 @@ public class ConnectionImpl extends AbstractConnection {
      *            - the local port to associate with this connection
      */
     public ConnectionImpl(int myPort) {
-        throw new NotImplementedException();
+    	super();
+    	this.myPort = myPort;
+        usedPorts.put(myPort, true);
+        myAddress = getIPv4Address();
     }
 
     private String getIPv4Address() {
@@ -73,7 +75,17 @@ public class ConnectionImpl extends AbstractConnection {
      */
     public void connect(InetAddress remoteAddress, int remotePort) throws IOException,
             SocketTimeoutException {
-        throw new NotImplementedException();
+        if (state != state.CLOSED) {
+        	throw new ConnectException("Socket not closed :("); 
+        	}
+        this.remoteAddress = remoteAddress.getHostAddress();
+        this.remotePort = remotePort;
+        try {
+        }
+        catch (Exception E){
+        	state = state.CLOSED;
+        	throw new IOException("Klarer ikke koble til host: " + E);
+        }
     }
 
     /**
