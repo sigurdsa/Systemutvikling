@@ -74,13 +74,13 @@ public class Klient {
 		System.out.println("/nChoose a value from the menu: ");
 
 		menuCounter = in.nextInt();
-		
-		int week; // her må uken settes til nåveærende uke. 
-		
+
+		int week = 0; // her må uken settes til nåveærende uke. 
+
 		Meeting m;
-		
+
 		switch (menuCounter){
-		
+
 		// viser egen kalender
 		case 1: p.showCalendar(p.getLoggedInAs(), week);
 		break;
@@ -99,7 +99,7 @@ public class Klient {
 		addParticipants(0, m);
 		p.sendMeetingRequests(m);
 		break;
-		
+
 		// viser alle møter som bruker har opprettet
 		case 4: showAllCreatedMeetings();
 		break;
@@ -116,9 +116,9 @@ public class Klient {
 		}
 	}
 
-	private static void showAllCreatedMeetings() {
+	private static void showAllCreatedMeetings() throws IOException {
 		ArrayList<Meeting> l = p.showAllCreatedMeetings();
-		
+
 		System.out.println("Would you like to cancel a meeting? (y/n)");
 		String a = br.readLine();
 
@@ -135,15 +135,22 @@ public class Klient {
 			System.out.println("Which one? Type a number from the list above");
 			int j = in.nextInt();
 			changeMeeting(l.get(j)); 
-					break;
+			showAllCreatedMeetings();
 		}
-		default: ;
+		else{ mainMenu();		
+		}
 
+		break;
 
-		
+		default: mainMenu();
+		break;
+
+		}
 	}
 
 	public void showCalendar(Person p, int week){
+		// her må vi hente kalenderen fra prosjektklassen.
+		// må også ha en løkke som gjør at man kan bla mellom ulike uker.
 	}
 
 
@@ -154,22 +161,23 @@ public class Klient {
 
 				System.out.println("Are you able to attend this meeting? (y / n / (any other letter if you don't want to answer yet");
 				String s = br.readLine();
+
 				switch(s){
-				case "n":  
-					Meetingrequest r = p.getLoggedInAs().getMeetingRequestList().get(i);
-					r.setAttending(false);
-					p.getLoggedInAs().addMeetingToCalendar(r.getMeeting());
-					break;
-				case "y": p.getLoggedInAs().getMeetingRequestList().get(i).setAttending(true);
+				case "n": p.getLoggedInAs().getMeetingRequestList().get(i).setAttending(false);
 				break;
-				default:; // hva gjør jeg når jeg ikke vil at noe skal skje?
+
+				case "y": Meetingrequest r =  p.getLoggedInAs().getMeetingRequestList().get(i);
+				r.setAttending(true);
+				p.getLoggedInAs().addMeetingToCalendar(r.getMeeting());
+				break;
+
+				default:
 				break;
 				}
 
 			}
 		}
-	
-
+		mainMenu(); // returnerer til Main Menu når man er ferdig.
 	}
 
 
@@ -186,7 +194,7 @@ public class Klient {
 						System.out.println(j + ".  " + p.getPersonList().get(j));
 					}
 				}
-			
+
 				// bruker velger en person den ønsker å legge til møtet
 				int o = in.nextInt();
 				m.addParticipant(p.getPersonList().get(o)); 
@@ -214,7 +222,7 @@ public class Klient {
 
 		System.out.println("Type end time (hh:mm): ");
 		String endTime = br.readLine();
-	
+
 		Date st = stringToDate(date, startTime);
 		Date et = stringToDate(date, endTime);
 
@@ -223,7 +231,7 @@ public class Klient {
 
 		System.out.println("Do you want to book a room? (y/n)");
 		String a = br.readLine();
-	
+
 		switch (a){
 		case "n": m = p.createMeeting(st,et, descr); 
 		break;
@@ -234,7 +242,7 @@ public class Klient {
 		return m;
 	}
 
-	
+
 	public static Meeting chooseRoom(Date st, Date et, String descr) throws IOException{
 		Meeting m = null;
 
@@ -292,10 +300,10 @@ public class Klient {
 		for (int i = 0; i < meeting.getMeetingRequests().size(); i++){
 			meeting.getMeetingRequests().get(i).resetAnswer();
 		}
-		
+
 		// her må det gjøres noe i forhold til rom!! Er det allerede booket et, i så fall, beholde det samme, eller booke et nytt?
 		// må også være et alternativ i forhold til å legge til flere deltakere.
-		
+
 		showAllCreatedMeetings();
 	}
 
