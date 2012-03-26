@@ -20,6 +20,7 @@ import no.ntnu.fp.net.cl.ClException;
 import no.ntnu.fp.net.cl.ClSocket;
 import no.ntnu.fp.net.cl.KtnDatagram;
 import no.ntnu.fp.net.cl.KtnDatagram.Flag;
+import no.ntnu.fp.net.co.AbstractConnection.State;
 
 /**
  * Implementation of the Connection-interface. <br>
@@ -81,6 +82,11 @@ public class ConnectionImpl extends AbstractConnection {
         this.remoteAddress = remoteAddress.getHostAddress();
         this.remotePort = remotePort;
         try {
+        	state = State.SYN_SENT;
+        	KtnDatagram retur = sendHelper(constructInternalPacket(Flag.SYN));
+        	lastValidPacketReceived = retur;//kun for å ikke ha denne med null-verdi etter connection
+        	sendAck(retur, false);
+        	state = State.ESTABLISHED;
         }
         catch (Exception E){
         	state = state.CLOSED;
@@ -95,9 +101,44 @@ public class ConnectionImpl extends AbstractConnection {
      * @see Connection#accept()
      */
     public Connection accept() throws IOException, SocketTimeoutException {
-        throw new NotImplementedException();
+        if (state != state.CLOSED && state != state.LISTEN){
+        	throw new IOException("Kobling er ikke lukket");
+        }
+        state = State.LISTEN;
+        KtnDatagram mottatt = null;
+        while (!isValid(mottatt)) {
+        	mottatt = receivePacket(true); //venter på å motta syn-pakke
+        }
+        ConnectionImpl newConnection = new ConnectionImpl(createPort()); //ny connection lages
+        newConnection.finalizeConnection(mottatt); //avslutter three-way handshake
+        return newConnection;
     }
-
+    
+    
+    // en ny klasse for å fullføre en tilkobling startet med accept
+    private void finalizeConnection(KtnDatagram synpack) throws IOException {
+    	lastValidPacketReceived = synpack;
+    	state = State.SYN_RCVD;
+    	remoteAddress = synpack.getSrc_addr();
+    	remotePort = synpack.getSrc_port(); //syncer seg mot tilkobleren
+    	System.out.println("----------------------------------------------------------New socket at port " + myPort);
+    	sendAck(synpack, true);
+    	KtnDatagram retur = receiveAck();
+    	if (!isValid(retur)) {
+    		state = State.CLOSED;
+    		throw new IOException("Error during connection");
+    	}
+    	state = State.ESTABLISHED;
+    }
+    
+    
+    private static int createPort() {
+    	int port = (int)(Math.random()*1000) + 14000;
+    	while(usedPorts.containsKey(port)){
+    		port = (int)(Math.random()*1000) + 14000;
+    	}
+    	return port;
+    }
     /**
      * Send a message from the application.
      * 
@@ -111,7 +152,11 @@ public class ConnectionImpl extends AbstractConnection {
      * @see no.ntnu.fp.net.co.Connection#send(String)
      */
     public void send(String msg) throws ConnectException, IOException {
-        throw new NotImplementedException();
+    	if (state != State.ESTABLISHED) {
+    		throw new ConnectException("Error sending, not connected");
+    	}
+    	sendHelper(constructDataPacket(msg));
+    	System.out.println("----------------------------------------------------------Packet succsessfully sent");
     }
 
     /**
