@@ -102,16 +102,16 @@ public class Klient {
 		addParticipants(0, m);
 		p.sendMeetingRequests(m);
 		break;
-		
+
 		// viser alle møter som bruker har opprette
 		case 4: showAllCreatedMeetings();
 		break;
-		
+
 		// oppretter en avtale
 		case 5: createAppointment();
 
 		case 6: showAllCreatedAppointments();
-		
+
 
 		case 7: showMeetingRequests();
 		break;
@@ -126,10 +126,10 @@ public class Klient {
 	}
 
 	private static void showAllCreatedAppointments() throws IOException {
-		
+
 		// ok jeg vil hente ut bare avtaler.. 
 		ArrayList<Appointment> app = p.showAllCreatedAppointments();
-		
+
 		// her må vi ha en metode som skriver ut arraylist
 
 		System.out.println("Would you like to cancel an appointment? (y/n)");
@@ -159,323 +159,344 @@ public class Klient {
 		break;
 
 		}
-		// TODO Auto-generated method stub
-		
+
+
 	}
 
 	private static void changeAppointment(Appointment appointment) throws IOException {
-		System.out.println("New date");
-		String date = br.readLine();
 
-		System.out.println("New start time");
-		String st = br.readLine();
-		Date startTime = stringToDate(date, st);
-
-
-		System.out.println("New start time");
-		String et = br.readLine();
-		Date endTime = stringToDate(date, et);
-		
-		System.out.println("New description");
-		String descr = br.readLine();
-		
-		System.out.println("New place");
-		String place = br.readLine();
-		
-		// må legge dette inn i appointment. Men hva om de ikke ønsker å endre alle feltene?
-		// i tillegg, må her sjekke om det krasjer med noe.
-		
-	}
-
-	private static void cancelAppointment(Appointment appointment) {
-		p.getLoggedInAs().getCalendar().remove(appointment);
-		
-	}
-
-	private static void createAppointment() throws IOException {
-		System.out.println("Type date (dd/mm/yy): ");
-		String date = br.readLine();
-
-		System.out.println("Type start time (hh:mm): ");
-		String startTime = br.readLine();
-
-		System.out.println("Type end time (hh:mm): ");
-		String endTime = br.readLine();
-
-		Date st = stringToDate(date, startTime);
-		Date et = stringToDate(date, endTime);
-
-		System.out.println("Add a description");
-		String descr = br.readLine();
-		
-		System.out.println("Where?");
-		String where = br.readLine();
-		
-		Appointment a = new Appointment (st, et, descr, where);
-		p.getLoggedInAs().addSomethingToCalendar(a);
-		
-	}
-
-	private static void showAllCreatedMeetings() throws IOException {
-		ArrayList<Meeting> l = p.showAllCreatedMeetings();
-		// her må listen skrives ut. Metode for dette?!
-		
-		System.out.println("Would you like to cancel a meeting? (y/n)");
+		System.out.println("Would you like to change date and time? (y/n)");
 		String a = br.readLine();
-
-		switch(a){
-		case "y": System.out.println("Which one? Type a number from the list above");
-		int i = in.nextInt();
-		cancelMeeting(l.get(i));
-		showAllCreatedMeetings();
-		break;
-
-		case "n": System.out.println("Would you like to change a meeting?");
-		a  = br.readLine();
 		if (a.equals("y")){
-			System.out.println("Which one? Type a number from the list above");
-			int j = in.nextInt();
-			changeMeeting(l.get(j)); 
+			System.out.println("New date");
+			String date = br.readLine();
+	
+			System.out.println("New start time");
+			String st = br.readLine();
+			Date startTime = stringToDate(date, st);
+
+			System.out.println("New start time");
+			String et = br.readLine();
+			Date endTime = stringToDate(date, et);
+			
+			
+			// hvis det ikke krasjer
+			appointment.setStartTime(startTime);
+			appointment.setEndTime(endTime);
+		}
+		
+		System.out.println("Would you like to change description?");
+		a = br.readLine();
+		if (a.equals("y")){
+
+			System.out.println("New description");
+			String descr = br.readLine();
+			
+			appointment.setDescription(descr);
+		}
+		
+		System.out.println("Would you like to change place?");
+		a = br.readLine();
+		if (a.equals("y")){
+			System.out.println("New place");
+			String place = br.readLine();
+			appointment.setPlace(place);
+		}
+
+			// i tillegg, må her sjekke om det krasjer med noe.
+
+		}
+
+		private static void cancelAppointment(Appointment appointment) {
+			p.getLoggedInAs().getCalendar().remove(appointment);
+
+		}
+
+		private static void createAppointment() throws IOException {
+			System.out.println("Type date (dd/mm/yy): ");
+			String date = br.readLine();
+
+			System.out.println("Type start time (hh:mm): ");
+			String startTime = br.readLine();
+
+			System.out.println("Type end time (hh:mm): ");
+			String endTime = br.readLine();
+
+			Date st = stringToDate(date, startTime);
+			Date et = stringToDate(date, endTime);
+
+			System.out.println("Add a description");
+			String descr = br.readLine();
+
+			System.out.println("Where?");
+			String where = br.readLine();
+
+			Appointment a = new Appointment (st, et, descr, where);
+			p.getLoggedInAs().addSomethingToCalendar(a);
+
+		}
+
+		private static void showAllCreatedMeetings() throws IOException {
+			ArrayList<Meeting> l = p.showAllCreatedMeetings();
+			// her må listen skrives ut. Metode for dette?!
+
+			System.out.println("Would you like to cancel a meeting? (y/n)");
+			String a = br.readLine();
+
+			switch(a){
+			case "y": System.out.println("Which one? Type a number from the list above");
+			int i = in.nextInt();
+			cancelMeeting(l.get(i));
+			showAllCreatedMeetings();
+			break;
+
+			case "n": System.out.println("Would you like to change a meeting?");
+			a  = br.readLine();
+			if (a.equals("y")){
+				System.out.println("Which one? Type a number from the list above");
+				int j = in.nextInt();
+				changeMeeting(l.get(j)); 
+				showAllCreatedMeetings();
+			}
+			else{ mainMenu();		
+			}
+
+			break;
+
+			default: mainMenu();
+			break;
+
+			}
+		}
+
+		public void showCalendar(Person p, int week){
+			// her må vi hente kalenderen fra prosjektklassen.
+			// må også ha en løkke som gjør at man kan bla mellom ulike uker.
+		}
+
+
+		// viser de requestene som innlogger ikke har svart på
+		private static void showMeetingRequests() throws IOException {
+			for (int i = 0; i < p.getLoggedInAs().getMeetingRequestList().size(); i++){
+				if (!p.getLoggedInAs().getMeetingRequestList().get(i).hasAnswered()){
+					// skal vi sjekke her om det krasjer? Dette er ikke del av spesifikasjon... 
+
+					System.out.println("Are you able to attend this meeting? (y / n / (any other letter if you don't want to answer yet");
+					String s = br.readLine();
+
+					switch(s){
+					case "n": p.getLoggedInAs().getMeetingRequestList().get(i).setAttending(false);
+					break;
+
+					case "y": Meetingrequest r =  p.getLoggedInAs().getMeetingRequestList().get(i);
+					r.setAttending(true);
+					p.getLoggedInAs().addSomethingToCalendar(r.getMeeting());
+					break;
+
+					default:
+						break;
+					}
+
+				}
+			}
+			mainMenu(); // returnerer til Main Menu når man er ferdig.
+		}
+
+
+		private static void addParticipants(int i, Meeting m) throws IOException {
+			while (i == 0) {
+				System.out.println("Would you like to add another participant? (y/n)");
+				String a = br.readLine();
+
+				switch(a){
+				case "y": 
+					System.out.println("Choose one of the following persons"); 
+					for (int j = 0; j < p.getPersonList().size(); j++){
+						if (!m.getParticipants().contains(p.getPersonList().get(j))){
+							System.out.println(j + ".  " + p.getPersonList().get(j));
+						}
+					}
+
+					// bruker velger en person den ønsker å legge til møtet
+					int o = in.nextInt();
+					m.addParticipant(p.getPersonList().get(o)); 
+					Meetingrequest r = new Meetingrequest(m, p.getPersonList().get(o));
+					p.getPersonList().get(o).getMeetingRequestList().add(r);
+					m.getMeetingRequests().add(r);
+					break;
+
+				default: i = 1;
+				break;
+
+
+				}
+			}
+		}
+
+
+		public static Meeting createMeeting() throws IOException{
+			Meeting m = null;
+			System.out.println("Type date (dd/mm/yy): ");
+			String date = br.readLine();
+
+			System.out.println("Type start time (hh:mm): ");
+			String startTime = br.readLine();
+
+			System.out.println("Type end time (hh:mm): ");
+			String endTime = br.readLine();
+
+			Date st = stringToDate(date, startTime);
+			Date et = stringToDate(date, endTime);
+
+			System.out.println("Add a description");
+			String descr = br.readLine();
+
+			System.out.println("Do you want to book a room? (y/n)");
+			String a = br.readLine();
+
+			switch (a){
+			case "n": m = p.createMeeting(st,et, descr); 
+			break;
+
+			case "y": m = chooseRoom(st, et, descr); 		
+
+			}
+			return m;
+		}
+
+
+		public static Meeting chooseRoom(Date st, Date et, String descr) throws IOException{
+			Meeting m = null;
+
+			System.out.println("How many seats do you need?");
+			int nbr = in.nextInt();
+
+			ArrayList<Meetingroom> availableRooms =	p.generateAvailableRooms(st, et, nbr);
+
+			if (availableRooms.size() == 0){
+				System.out.println("No room is available in your specified period. Do you want to try another period" +
+						"(type x), or do you just want to create meeting without roomreservation (type y)?");
+
+				String a = br.readLine();
+
+				switch(a){
+				case "x": m = p.createMeeting(st, et, descr);
+				break;
+				case "y": m = createMeeting();
+				}
+			}
+
+			else{
+				System.out.println("/nThe following rooms are available in your specified period: ");
+
+				for (int i = 0; i < availableRooms.size(); i++){
+					System.out.println("Room number: " + i + ", " + availableRooms.get(i).getName());
+				}
+
+				System.out.println("/n Type a room number: ");
+				int i = in.nextInt();
+
+				m = p.createMeeting(st, et, descr, availableRooms.get(i));	
+				availableRooms.get(i).addMeetingToList(m);
+			}
+			return m;
+		}
+
+		public static void changeRoom(Meeting m, Date st, Date et ) throws IOException{
+
+			System.out.println("How many seats do you need?");
+			int nbr = in.nextInt();
+
+			ArrayList<Meetingroom> availableRooms =	p.generateAvailableRooms(st, et, nbr);
+
+			if (availableRooms.size() == 0){
+				System.out.println("No room is available in your specified period. Do you want to try another period" +
+						"(type x), or do you just want to create meeting without roomreservation (type y)?");
+
+				String a = br.readLine();
+
+				switch(a){
+				case "x": changeMeeting(m);
+				break;
+
+				case "y": m.getMeetingRoom().getMeetings().remove(m);
+				m.setMeetingRoom(null);
+
+				}
+			}
+
+			else{
+				System.out.println("/nThe following rooms are available in your specified period: ");
+
+				for (int i = 0; i < availableRooms.size(); i++){
+					System.out.println("Room number: " + i + ", " + availableRooms.get(i).getName());
+				}
+
+				System.out.println("/n Type a room number: ");
+				int i = in.nextInt();
+
+				// fjerner møtet fra det tidligere møterommets liste
+				m.getMeetingRoom().getMeetings().remove(m);
+
+				// legger til det nye møterommet.
+				m.setMeetingRoom(availableRooms.get(i));
+				availableRooms.get(i).addMeetingToList(m);
+			}
+
+		}
+
+		public static void changeMeeting(Meeting meeting) throws IOException{
+			System.out.println("New date");
+			String date = br.readLine();
+
+			System.out.println("New start time");
+			String st = br.readLine();
+			Date startTime = stringToDate(date, st);
+
+
+			System.out.println("New start time");
+			String et = br.readLine();
+			Date endTime = stringToDate(date, et);
+
+			// setter requesten til usvart
+			for (int i = 0; i < meeting.getMeetingRequests().size(); i++){
+				meeting.getMeetingRequests().get(i).resetAnswer();
+			}
+
+			addParticipants(0,meeting);
+
+			if (meeting.getMeetingRoom() != null){
+				if (!meeting.getMeetingRoom().isFree(meeting.getStartTime(), meeting.getEndTime())){				
+					changeRoom(meeting, startTime, endTime);
+				}
+
+				meeting.setStartTime(startTime);
+				meeting.setEndTime(endTime);
+			}
+
+
 			showAllCreatedMeetings();
 		}
-		else{ mainMenu();		
-		}
 
-		break;
-
-		default: mainMenu();
-		break;
-
-		}
-	}
-
-	public void showCalendar(Person p, int week){
-		// her må vi hente kalenderen fra prosjektklassen.
-		// må også ha en løkke som gjør at man kan bla mellom ulike uker.
-	}
-
-
-	// viser de requestene som innlogger ikke har svart på
-	private static void showMeetingRequests() throws IOException {
-		for (int i = 0; i < p.getLoggedInAs().getMeetingRequestList().size(); i++){
-			if (!p.getLoggedInAs().getMeetingRequestList().get(i).hasAnswered()){
-
-				System.out.println("Are you able to attend this meeting? (y / n / (any other letter if you don't want to answer yet");
-				String s = br.readLine();
-
-				switch(s){
-				case "n": p.getLoggedInAs().getMeetingRequestList().get(i).setAttending(false);
-				break;
-
-				case "y": Meetingrequest r =  p.getLoggedInAs().getMeetingRequestList().get(i);
-				r.setAttending(true);
-				p.getLoggedInAs().addSomethingToCalendar(r.getMeeting());
-				break;
-
-				default:
-					break;
-				}
-
-			}
-		}
-		mainMenu(); // returnerer til Main Menu når man er ferdig.
-	}
-
-
-	private static void addParticipants(int i, Meeting m) throws IOException {
-		while (i == 0) {
-			System.out.println("Would you like to add another participant? (y/n)");
+		public static void cancelMeeting(Meeting m) throws IOException{
+			System.out.println("Write an explanation for why the meeting was cancelled");
 			String a = br.readLine();
-
-			switch(a){
-			case "y": 
-				System.out.println("Choose one of the following persons"); 
-				for (int j = 0; j < p.getPersonList().size(); j++){
-					if (!m.getParticipants().contains(p.getPersonList().get(j))){
-						System.out.println(j + ".  " + p.getPersonList().get(j));
-					}
-				}
-
-				// bruker velger en person den ønsker å legge til møtet
-				int o = in.nextInt();
-				m.addParticipant(p.getPersonList().get(o)); 
-				Meetingrequest r = new Meetingrequest(m, p.getPersonList().get(o));
-				p.getPersonList().get(o).getMeetingRequestList().add(r);
-				m.getMeetingRequests().add(r);
-				break;
-
-			default: i = 1;
-			break;
-
-
-			}
-		}
-	}
-
-
-	public static Meeting createMeeting() throws IOException{
-		Meeting m = null;
-		System.out.println("Type date (dd/mm/yy): ");
-		String date = br.readLine();
-
-		System.out.println("Type start time (hh:mm): ");
-		String startTime = br.readLine();
-
-		System.out.println("Type end time (hh:mm): ");
-		String endTime = br.readLine();
-
-		Date st = stringToDate(date, startTime);
-		Date et = stringToDate(date, endTime);
-
-		System.out.println("Add a description");
-		String descr = br.readLine();
-
-		System.out.println("Do you want to book a room? (y/n)");
-		String a = br.readLine();
-
-		switch (a){
-		case "n": m = p.createMeeting(st,et, descr); 
-		break;
-
-		case "y": m = chooseRoom(st, et, descr); 		
-
-		}
-		return m;
-	}
-
-
-	public static Meeting chooseRoom(Date st, Date et, String descr) throws IOException{
-		Meeting m = null;
-
-		System.out.println("How many seats do you need?");
-		int nbr = in.nextInt();
-
-		ArrayList<Meetingroom> availableRooms =	p.generateAvailableRooms(st, et, nbr);
-
-		if (availableRooms.size() == 0){
-			System.out.println("No room is available in your specified period. Do you want to try another period" +
-					"(type x), or do you just want to create meeting without roomreservation (type y)?");
-
-			String a = br.readLine();
-
-			switch(a){
-			case "x": m = p.createMeeting(st, et, descr);
-			break;
-			case "y": m = createMeeting();
-			}
+			Message msg = new Message(p.getLoggedInAs(), m.getParticipants(), a);
+			// her må det gjøres noe i forhold til meldinger.
+			//Møtet må også bli slettet fra alle lister!!! How to do it? Dvs alle møteromslistene, samt alle requester møte inngår i. 
 		}
 
-		else{
-			System.out.println("/nThe following rooms are available in your specified period: ");
+		public static Date stringToDate(String date, String time){
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy hh:mm");
 
-			for (int i = 0; i < availableRooms.size(); i++){
-				System.out.println("Room number: " + i + ", " + availableRooms.get(i).getName());
+			Date c = null;
+			try {
+				c = sdf.parse(date + " " + time);
+			} catch (ParseException e) {
+				e.printStackTrace();
 			}
 
-			System.out.println("/n Type a room number: ");
-			int i = in.nextInt();
+			return c;
 
-			m = p.createMeeting(st, et, descr, availableRooms.get(i));	
-			availableRooms.get(i).addMeetingToList(m);
 		}
-		return m;
 	}
-
-	public static void changeRoom(Meeting m, Date st, Date et ) throws IOException{
-
-		System.out.println("How many seats do you need?");
-		int nbr = in.nextInt();
-
-		ArrayList<Meetingroom> availableRooms =	p.generateAvailableRooms(st, et, nbr);
-
-		if (availableRooms.size() == 0){
-			System.out.println("No room is available in your specified period. Do you want to try another period" +
-					"(type x), or do you just want to create meeting without roomreservation (type y)?");
-
-			String a = br.readLine();
-
-			switch(a){
-			case "x": changeMeeting(m);
-			break;
-
-			case "y": m.getMeetingRoom().getMeetings().remove(m);
-			m.setMeetingRoom(null);
-
-			}
-		}
-
-		else{
-			System.out.println("/nThe following rooms are available in your specified period: ");
-
-			for (int i = 0; i < availableRooms.size(); i++){
-				System.out.println("Room number: " + i + ", " + availableRooms.get(i).getName());
-			}
-
-			System.out.println("/n Type a room number: ");
-			int i = in.nextInt();
-
-			// fjerner møtet fra det tidligere møterommets liste
-			m.getMeetingRoom().getMeetings().remove(m);
-
-			// legger til det nye møterommet.
-			m.setMeetingRoom(availableRooms.get(i));
-			availableRooms.get(i).addMeetingToList(m);
-		}
-
-	}
-
-	public static void changeMeeting(Meeting meeting) throws IOException{
-		System.out.println("New date");
-		String date = br.readLine();
-
-		System.out.println("New start time");
-		String st = br.readLine();
-		Date startTime = stringToDate(date, st);
-
-
-		System.out.println("New start time");
-		String et = br.readLine();
-		Date endTime = stringToDate(date, et);
-
-		// setter requesten til usvart
-		for (int i = 0; i < meeting.getMeetingRequests().size(); i++){
-			meeting.getMeetingRequests().get(i).resetAnswer();
-		}
-
-		addParticipants(0,meeting);
-
-		if (meeting.getMeetingRoom() != null){
-			if (!meeting.getMeetingRoom().isFree(meeting.getStartTime(), meeting.getEndTime())){				
-				changeRoom(meeting, startTime, endTime);
-			}
-
-			meeting.setStartTime(startTime);
-			meeting.setEndTime(endTime);
-		}
-
-
-		showAllCreatedMeetings();
-	}
-
-	public static void cancelMeeting(Meeting m) throws IOException{
-		System.out.println("Write an explanation for why the meeting was cancelled");
-		String a = br.readLine();
-		Message msg = new Message(p.getLoggedInAs(), m.getParticipants(), a);
-		// her må det gjøres noe i forhold til meldinger.
-		//Møtet må også bli slettet fra alle lister!!! How to do it? Dvs alle møteromslistene, samt alle requester møte inngår i. 
-	}
-
-	public static Date stringToDate(String date, String time){
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy hh:mm");
-
-		Date c = null;
-		try {
-			c = sdf.parse(date + " " + time);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-
-		return c;
-
-	}
-}
