@@ -21,7 +21,7 @@ public class Appointment extends AbstractAppointment{
 		this.place = place;
 	}
 	
-	public String getPlace(String place){
+	public String getPlace(){
 		return place;
 	}
 
