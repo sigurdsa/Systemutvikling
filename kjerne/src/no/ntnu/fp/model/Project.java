@@ -25,6 +25,7 @@ public class Project implements PropertyChangeListener {
 	private ArrayList<Meetingroom> meetingRooms;
 	private ArrayList<Meeting> meetings;
 	private ArrayList<Meetingrequest> meetingRequests;
+	private ArrayList<Message> messages;
 	
 	private Db db;
 
@@ -39,6 +40,7 @@ public class Project implements PropertyChangeListener {
 		meetingRooms = db.getMeetingrooms();
 		meetings = db.getMeetings(this);
 		meetingRequests = db.getMeetingRequests(this);
+		messages = db.getMessages(this);
 		Iterator itr = personList.iterator();
 		while(itr.hasNext()) {
 			Person p = (Person) itr.next();
@@ -294,8 +296,8 @@ public class Project implements PropertyChangeListener {
 	}
 
 	public Meeting createMeeting(Date startTime, Date endTime, String description){
-		Meeting meeting = new Meeting(1,startTime, endTime, description, loggedInAs);
-
+		//Meeting meeting = new Meeting(1,startTime, endTime, description, loggedInAs);
+		Meeting meeting = new Meeting(1,"", "", description, loggedInAs);
 		if (isFree(startTime, endTime, loggedInAs.getCalendar())){
 			meetings.add(meeting);
 			loggedInAs.addSomethingToCalendar(meeting);
@@ -321,7 +323,8 @@ public class Project implements PropertyChangeListener {
 	}
 
 	public Meeting createMeeting(Date st, Date et, String description, Meetingroom meetingroom) {
-		Meeting meeting = new Meeting(1,st, et, description, loggedInAs, meetingroom);
+		//Meeting meeting = new Meeting(1,st, et, description, loggedInAs, meetingroom);
+		Meeting meeting = new Meeting(""+1,"", "", description, loggedInAs, meetingroom);
 		meetings.add(meeting);
 		return meeting;
 

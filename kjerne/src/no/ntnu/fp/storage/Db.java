@@ -135,6 +135,25 @@ public class Db {
 		}		
 		return liste;
 	}
+	
+	public ArrayList<Message> getMessages(Project p) {
+		ArrayList<Message> liste = new ArrayList<Message>();
+		try{
+			in =  new BufferedReader(new FileReader("db.txt"));
+			String linje;
+			while ((linje = in.readLine()) != null) {
+				String[] linjeliste = linje.split(";");
+				if(linjeliste[0].equals("Message")) {	
+					liste.add(new Message( p.getPersonById(Integer.parseInt(linjeliste[1])), p.getPersonById(Integer.parseInt(linjeliste[1])), linjeliste[2],linjeliste[3]));
+				}
+			}
+			in.close();
+		} catch (Exception e) {
+			System.out.println("Kunne ikke åpne fil");
+			System.out.println(e.getMessage());
+		}		
+		return liste;
+	}
 
 
 }
