@@ -15,6 +15,14 @@ public class Meetingroom {
 		this.seats = seats;		
 	}
 	
+	public ArrayList<Meeting> getMeetings(){
+		return meetings;
+	}
+	
+	public void removeMeeting(Meeting m){
+		meetings.remove(m);
+		
+	}
 
 	public int getId() {
 		return id;

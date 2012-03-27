@@ -51,14 +51,14 @@ public class Person {
 	 * the <code>Group</code> class.
 	 */
 	
-	private ArrayList<Meeting> calendar = new ArrayList<Meeting>();
+	private ArrayList<AbstractAppointment> calendar = new ArrayList<AbstractAppointment>();
 	
-	public ArrayList<Meeting> getCalendar(){
+	public ArrayList<AbstractAppointment> getCalendar(){
 		return calendar;
 	}
 	
-	public void addMeetingToCalendar(Meeting m){
-		calendar.add(m);
+	public void addSomethingToCalendar(AbstractAppointment a){
+		calendar.add(a);
 		Collections.sort(calendar, new CustomComparator());
 	}
 	

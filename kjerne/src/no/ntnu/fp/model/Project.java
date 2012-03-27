@@ -283,6 +283,7 @@ public class Project implements PropertyChangeListener {
 	public Meeting createMeeting(Date startTime, Date endTime, String description){
 		Meeting meeting = new Meeting(startTime, endTime, description, loggedInAs);
 		meetings.add(meeting);
+		loggedInAs.addSomethingToCalendar(meeting);
 		return meeting;
 	}
 
@@ -315,12 +316,12 @@ public class Project implements PropertyChangeListener {
 		}
 		
 
-	public String printMeeting(Meeting m){
+	public String printMeeting(AbstractAppointment m){
 		
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm");
 		String startTime = formatter.format(m.getStartTime());
 		String endTime = formatter.format(m.getEndTime());
-		String room = m.getMeetingRoom().getName();
+		String room = ((Meeting) m).getMeetingRoom().getName();
 		String descr = m.getDescription();
 		
 		return (startTime + "  " + endTime + "  " + room + "  " + descr);		
