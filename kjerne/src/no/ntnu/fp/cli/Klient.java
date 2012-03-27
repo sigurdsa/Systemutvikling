@@ -67,9 +67,10 @@ public class Klient {
 		System.out.println("1.  Show my calendar");
 		System.out.println("2.  Show an other persons calendar"); 
 		System.out.println("3.  Create a new meeting");
-		System.out.println("4.  Create a new appointment");
 		System.out.println("4.  Show all of your created meetings");
-		System.out.println("5.  Show meeting requests. You have got " + p.CountNewRequests() + " requests.");
+		System.out.println("5.  Create a new appointment");
+		System.out.println("6.  Show all of your created appointments");
+		System.out.println("7.  Show meeting requests. You have got " + p.CountNewRequests() + " requests.");
 		System.out.println("0.  Log out");
 
 
@@ -102,13 +103,17 @@ public class Klient {
 		p.sendMeetingRequests(m);
 		break;
 		
-		case 4: createAppointment();
-
-		// viser alle møter som bruker har opprettet
-		case 5: showAllCreatedMeetings();
+		// viser alle møter som bruker har opprette
+		case 4: showAllCreatedMeetings();
 		break;
+		
+		// oppretter en avtale
+		case 5: createAppointment();
 
-		case 6: showMeetingRequests();
+		case 6: showAllCreatedAppointments();
+		
+
+		case 7: showMeetingRequests();
 		break;
 
 		case 0: p.logout();
@@ -118,6 +123,42 @@ public class Klient {
 		break;
 
 		}
+	}
+
+	private static void showAllCreatedAppointments() {
+		
+		// ok jeg vil hente ut bare avtaler.. 
+		ArrayList<Meeting> l = p.showAllCreatedMeetings();
+
+		System.out.println("Would you like to cancel a meeting? (y/n)");
+		String a = br.readLine();
+
+		switch(a){
+		case "y": System.out.println("Which one? Type a number from the list above");
+		int i = in.nextInt();
+		cancelMeeting(l.get(i));
+		showAllCreatedMeetings();
+		break;
+
+		case "n": System.out.println("Would you like to change a meeting?");
+		a  = br.readLine();
+		if (a.equals("y")){
+			System.out.println("Which one? Type a number from the list above");
+			int j = in.nextInt();
+			changeMeeting(l.get(j)); 
+			showAllCreatedMeetings();
+		}
+		else{ mainMenu();		
+		}
+
+		break;
+
+		default: mainMenu();
+		break;
+
+		}
+		// TODO Auto-generated method stub
+		
 	}
 
 	private static void createAppointment() throws IOException {
@@ -136,14 +177,18 @@ public class Klient {
 		System.out.println("Add a description");
 		String descr = br.readLine();
 		
-		Appointment a = new Appointment (st, et, descr);
+		System.out.println("Where?");
+		String where = br.readLine();
+		
+		Appointment a = new Appointment (st, et, descr, where);
 		p.getLoggedInAs().addSomethingToCalendar(a);
 		
 	}
 
 	private static void showAllCreatedMeetings() throws IOException {
 		ArrayList<Meeting> l = p.showAllCreatedMeetings();
-
+		// her må listen skrives ut. Metode for dette?!
+		
 		System.out.println("Would you like to cancel a meeting? (y/n)");
 		String a = br.readLine();
 

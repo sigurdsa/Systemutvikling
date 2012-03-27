@@ -301,9 +301,17 @@ public class Project implements PropertyChangeListener {
 				createdMeetings.add(meetings.get(i));
 			}
 		}
-		return createdMeetings;
-		
-		
+		return createdMeetings;	
+	}
+	
+	public ArrayList<Appointment> showAllCreatedAppointments(){
+		ArrayList<Appointment> createdAppointments = new ArrayList<Appointment>();
+		for (int i= 0; i < loggedInAs.getCalendar().size(); i++){
+			if(loggedInAs.getCalendar().get(i) instanceof Appointment){
+				createdAppointments.add((Appointment) loggedInAs.getCalendar().get(i));
+			}
+		}
+		return createdAppointments;
 	}
 
 

@@ -9,9 +9,12 @@ import java.util.Date;
  * 
  */
 public class Appointment extends AbstractAppointment{
+	
+	String place;
 
-	public Appointment(Date startTime, Date endTime, String description) {
+	public Appointment(Date startTime, Date endTime, String description, String place) {
 		super(startTime, endTime, description);
+		this.place = place;
 	}
 
 		
