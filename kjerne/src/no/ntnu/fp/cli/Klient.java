@@ -74,7 +74,7 @@ public class Klient {
 		System.out.println("0.  Log out");
 
 
-		System.out.println("/nChoose a value from the menu: ");
+		System.out.print("\nChoose a value from the menu: ");
 
 		menuCounter = in.nextInt();
 
@@ -398,13 +398,13 @@ public class Klient {
 		}
 
 		else{
-			System.out.println("/nThe following rooms are available in your specified period: ");
+			System.out.println("\nThe following rooms are available in your specified period: ");
 
 			for (int i = 0; i < availableRooms.size(); i++){
 				System.out.println("Room number: " + i + ", " + availableRooms.get(i).getName());
 			}
 
-			System.out.println("/n Type a room number: ");
+			System.out.println("\n Type a room number: ");
 			int i = in.nextInt();
 
 			m = p.createMeeting(st, et, descr, availableRooms.get(i));	
@@ -437,13 +437,13 @@ public class Klient {
 		}
 
 		else{
-			System.out.println("/nThe following rooms are available in your specified period: ");
+			System.out.println("\nThe following rooms are available in your specified period: ");
 
 			for (int i = 0; i < availableRooms.size(); i++){
 				System.out.println("Room number: " + i + ", " + availableRooms.get(i).getName());
 			}
 
-			System.out.println("/n Type a room number: ");
+			System.out.println("\n Type a room number: ");
 			int i = in.nextInt();
 
 			// fjerner møtet fra det tidligere møterommets liste

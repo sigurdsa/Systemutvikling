@@ -12,9 +12,8 @@ public class Appointment extends AbstractAppointment{
 	
 	String place;
 
-	public Appointment(int id, Date startTime, Date endTime, String description, String place) {
-		super(id,startTime, endTime, description);
-		
+	public Appointment(String id, String startTime, String endTime, String description, String place) {
+		super(Integer.parseInt(id),startTime, endTime, description);
 		this.place = place;
 	}
 

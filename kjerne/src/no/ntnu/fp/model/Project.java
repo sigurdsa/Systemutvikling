@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import no.ntnu.fp.model.Meetingrequest;
+import no.ntnu.fp.storage.Db;
 
 /**
  * The <code>Project</code> class is a list of zero or more {@link Person} objects.
@@ -23,15 +24,27 @@ public class Project implements PropertyChangeListener {
 	private ArrayList<Person> personList;
 	private ArrayList<Meetingroom> meetingRooms;
 	private ArrayList<Meeting> meetings;
+	private ArrayList<Meetingrequest> meetingRequests;
+	
+	private Db db;
 
 	private PropertyChangeSupport propChangeSupp;
 
 	Person loggedInAs = null;
 
 	public Project() {
-		personList = new ArrayList<Person>();
-		meetingRooms = new ArrayList<Meetingroom>();
-		meetings = new ArrayList<Meeting>();
+		// Leser inn fra textfil
+		db = new Db();
+		personList = db.getPersons();
+		meetingRooms = db.getMeetingrooms();
+		meetings = db.getMeetings(this);
+		meetingRequests = db.getMeetingRequests(this);
+		Iterator itr = personList.iterator();
+		while(itr.hasNext()) {
+			Person p = (Person) itr.next();
+			p.addCalendarList(db.getAppointments(p.getId()));
+			// Legg til møter?
+		}
 		propChangeSupp = new java.beans.PropertyChangeSupport(this);
 	}
 
@@ -385,14 +398,68 @@ public class Project implements PropertyChangeListener {
 		}
 	}
 
-	public Person getPersonById(int parseInt) {
-		// TODO Auto-generated method stub
+	public Person getPersonById(int id) {
+		Iterator itr = personList.iterator();
+		while(itr.hasNext()) {
+			Person p = (Person)itr.next();
+			if (p.getId() == id) return p;
+		}
 		return null;
 	}
 
-	public Meetingroom getMeetingroomById(int parseInt) {
-		// TODO Auto-generated method stub
+	public Meetingroom getMeetingroomById(int id) {
+		Iterator itr = meetingRooms.iterator();
+		while(itr.hasNext()) {
+			Meetingroom p = (Meetingroom)itr.next();
+			if (p.getId() == id) return p;
+		}
 		return null;
+	}
+	
+	public Meeting getMeetingById(int id) {
+		Iterator itr = meetings.iterator();
+		while(itr.hasNext()) {
+			Meeting p = (Meeting)itr.next();
+			if (p.getId() == id) return p;
+		}
+		return null;
+	}	
+	
+	public int getMeetingroomID() {
+		int i = 1;
+		Iterator itr = meetingRooms.iterator();
+		while(itr.hasNext()) {
+			if (((Meetingroom)itr.next()).getId() > i) i = ((Meetingroom)itr.next()).getId();
+		}
+		return i;
+	}
+	
+	public int getMeetingID() {
+		int i = 1;
+		Iterator itr = meetings.iterator();
+		while(itr.hasNext()) {
+			Meeting p = (Meeting) itr.next();
+			if (p.getId() >= i) i = p.getId() + 1;
+		}
+		return i;
+	}
+	
+	public int getPersonID() {
+		int i = 1;
+		Iterator itr = personList.iterator();
+		while(itr.hasNext()) {
+			Person p = (Person) itr.next();
+			if (p.getId() >= i) i = p.getId() + 1;
+		}
+		return i;
+	}
+	
+	public void getFromDb() {
+		
+	}
+	
+	public void putToDb() {
+		
 	}
 
 }

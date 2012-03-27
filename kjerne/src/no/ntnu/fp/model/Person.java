@@ -16,42 +16,17 @@ import java.util.Date;
  */
 public class Person {
 	
-	/**
-	 * This member variable holds the person's name.
-	 */
 	private String name;
-	
-	/**
-	 * This member variable holds the person's email address.
-	 */
 	private String email;
-	
-	/**
-	 * This member variable holds the person's date of birth.
-	 */
 	private Date dateOfBirth;
-	
-	/**
-	 * Brukernavn
-	 */
 	private String username;
-	
-	/**
-	 * passord kryptert
-	 */
 	private String password;	
-	
-	/**
-	 * This member variable holds a unique identifier for this object.
-	 */
 	private int id;
 	
-	/**
-	 * This member variable provides functionality for notifying of changes to
-	 * the <code>Group</code> class.
-	 */
-	
+
+
 	private ArrayList<AbstractAppointment> calendar = new ArrayList<AbstractAppointment>();
+	private ArrayList<Meetingrequest> meetingrequestList = new ArrayList<Meetingrequest>(); 
 	
 	public ArrayList<AbstractAppointment> getCalendar(){
 		return calendar;
@@ -62,7 +37,9 @@ public class Person {
 		Collections.sort(calendar, new CustomComparator());
 	}
 	
-	private ArrayList<Meetingrequest> meetingrequestList = new ArrayList<Meetingrequest>(); 
+	public void addCalendarList(ArrayList<AbstractAppointment> calendar) {
+		this.calendar.addAll(calendar);
+	}	
 	
 	public  ArrayList<Meetingrequest> getMeetingRequestList(){
 		return meetingrequestList;
@@ -106,10 +83,13 @@ public class Person {
 	 * {@link java.lang.String}, while the date of birth is given today's date. The 
 	 * {@linkplain #getId() id field} is set to current time when the object is created.
 	 */
-	public Person() {
+	public Person(int id) {
+		this.id = id;
 		name = "";
 		email = "";
-		dateOfBirth = new Date();
+		dateOfBirth = new Date(2012,3,27);
+		password = "test";
+		username = "oya";
 		propChangeSupp = new PropertyChangeSupport(this);
 	}
 	
@@ -121,19 +101,24 @@ public class Person {
 	 * @param email The person's e-mail address
 	 * @param dateOfBirth The person's date of birth.
 	 */
-	public Person(String name, String email, Date dateOfBirth) {
-		this();
+	public Person(int id, String name, String email, Date dateOfBirth) {
+		this(id);
 		this.name = name;
 		this.email = email;
 		this.dateOfBirth = dateOfBirth;
 	}
 	
 	public Person(String id, String name, String email, String dateOfBirth, String username, String password) {
-		 this();
+		 
 		 this.name = name;
 		 this.email = email;
+		 
 		 this.id = Integer.parseInt(id);
-		 this.dateOfBirth = new Date(Integer.parseInt(dateOfBirth.substring(0, 3), Integer.parseInt(dateOfBirth.substring(5,6), Integer.parseInt(dateOfBirth.substring(7,8)))));
+		 this.dateOfBirth = new Date();
+		 this.dateOfBirth.setYear(Integer.parseInt(dateOfBirth.substring(0, 3)));
+		 this.dateOfBirth.setMonth(Integer.parseInt(dateOfBirth.substring(5, 6)));
+		 this.dateOfBirth.setDate(Integer.parseInt(dateOfBirth.substring(8, 9)));
+		 
 		 this.username = username;
 		 this.password = password;
 	}
@@ -338,5 +323,15 @@ public class Person {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public String personToDb() {
+		Person p = this;
+		return "" + p.getId() + ";" + p.getName() + ";" + p.getEmail() + ";" + p.getDateOfBirth().getYear() + "-" + ((p.getDateOfBirth().getMonth() < 10) ? ("0"+p.getDateOfBirth().getMonth()) : p.getDateOfBirth().getMonth())  + "-" + ((p.getDateOfBirth().getDate() < 10) ? ("0"+p.getDateOfBirth().getDate()) : p.getDateOfBirth().getDate())  + ";" + p.getUsername() + ";" + p.getPassword();
+	}
+
+	public char[] appointmentsToDb() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

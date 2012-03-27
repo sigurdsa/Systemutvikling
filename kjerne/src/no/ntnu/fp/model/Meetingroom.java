@@ -10,9 +10,10 @@ public class Meetingroom {
 	private int seats;
 	private ArrayList<Meeting>	meetings = new ArrayList<Meeting>();
 	
-	public Meetingroom(String name, int seats) {
+	public Meetingroom(String id, String name, String seats) {
+		this.id = Integer.parseInt(id);
 		this.name = name;
-		this.seats = seats;		
+		this.seats = Integer.parseInt(seats);		
 	}
 	
 	public ArrayList<Meeting> getMeetings(){

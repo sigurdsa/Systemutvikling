@@ -15,13 +15,13 @@ public class Meeting extends AbstractAppointment {
 	private ArrayList<Person> participants = new ArrayList<Person>();
 	private ArrayList<Meetingrequest> meetingRequests = new ArrayList<Meetingrequest>();
 	
-	public Meeting(int id, Date startTime, Date endTime, String description, Person meetingLeader) {
+	public Meeting(int id, String startTime, String endTime, String description, Person meetingLeader) {
 		super(id,startTime, endTime, description);
 		this.meetingLeader = meetingLeader;
 	}
 
-	public Meeting(int id, Date startTime, Date endTime, String description, Person meetingLeader, Meetingroom meetingRoom) {
-		super(id, startTime,endTime,description);
+	public Meeting(String id, String startTime, String endTime, String description, Person meetingLeader, Meetingroom meetingRoom) {
+		super(Integer.parseInt(id),startTime, endTime, description);
 		this.meetingLeader = meetingLeader;
 		this.meetingRoom = meetingRoom;
 	}

@@ -6,33 +6,24 @@ package no.ntnu.fp.model;
  * 
  */
 public class Meetingrequest {
-	/**
-	 * Det aktuelle møtet 
-	 */
+
 	private Meeting meeting;
-	
-	/**
-	 * Den aktuelle personen
-	 */
 	private Person participant;
 	
 	/**
-	 * True om deltakeren er med
+	 * 0 declined, 1 accepted, 2 not answered
 	 */
-	private boolean attending;
+	private int answer;
 	
-	/**
-	 * Om personen har svart 
-	 */
-	private boolean hasAnswered;
-	/**
-	 * Konstruktør
-	 */
 	public Meetingrequest(Meeting meeting, Person participant) {
 		this.meeting = meeting;
 		this.participant = participant;
-		attending = false; 
-		hasAnswered = false;
+		this.answer = 2;
+	}
+	public Meetingrequest(Meeting meeting, Person participant, String answer) {
+		this.meeting = meeting;
+		this.participant = participant;
+		this.answer = Integer.parseInt(answer);
 	}
 
 	public Meeting getMeeting() {
@@ -52,20 +43,21 @@ public class Meetingrequest {
 	}
 
 	public boolean isAttending() {
-		return attending;
+		if (answer == 1) return true;
+		return false;
 	}
 
 	public void setAttending(boolean attending) {
-		this.attending = attending;
-		hasAnswered = true;
+		if (attending) this.answer = 1;
+		else this.answer = 0;
 	}
 
 	public boolean hasAnswered() {
-		return hasAnswered;
+		if(answer != 2) return true;
+		return false;
 	}
 	
 	public void resetAnswer(){
-		this.hasAnswered = false;
-		this.attending = false;
+		answer = 2;
 	}
 }
