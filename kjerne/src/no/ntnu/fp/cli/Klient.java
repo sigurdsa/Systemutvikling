@@ -125,28 +125,30 @@ public class Klient {
 		}
 	}
 
-	private static void showAllCreatedAppointments() {
+	private static void showAllCreatedAppointments() throws IOException {
 		
 		// ok jeg vil hente ut bare avtaler.. 
-		ArrayList<Meeting> l = p.showAllCreatedMeetings();
+		ArrayList<Appointment> app = p.showAllCreatedAppointments();
+		
+		// her må vi ha en metode som skriver ut arraylist
 
-		System.out.println("Would you like to cancel a meeting? (y/n)");
+		System.out.println("Would you like to cancel an appointment? (y/n)");
 		String a = br.readLine();
 
 		switch(a){
 		case "y": System.out.println("Which one? Type a number from the list above");
 		int i = in.nextInt();
-		cancelMeeting(l.get(i));
-		showAllCreatedMeetings();
+		cancelAppointment(app.get(i));
+		showAllCreatedAppointments();
 		break;
 
-		case "n": System.out.println("Would you like to change a meeting?");
+		case "n": System.out.println("Would you like to change an appointment?");
 		a  = br.readLine();
 		if (a.equals("y")){
 			System.out.println("Which one? Type a number from the list above");
 			int j = in.nextInt();
-			changeMeeting(l.get(j)); 
-			showAllCreatedMeetings();
+			changeAppointment(app.get(j)); 
+			showAllCreatedAppointments();
 		}
 		else{ mainMenu();		
 		}
@@ -158,6 +160,35 @@ public class Klient {
 
 		}
 		// TODO Auto-generated method stub
+		
+	}
+
+	private static void changeAppointment(Appointment appointment) throws IOException {
+		System.out.println("New date");
+		String date = br.readLine();
+
+		System.out.println("New start time");
+		String st = br.readLine();
+		Date startTime = stringToDate(date, st);
+
+
+		System.out.println("New start time");
+		String et = br.readLine();
+		Date endTime = stringToDate(date, et);
+		
+		System.out.println("New description");
+		String descr = br.readLine();
+		
+		System.out.println("New place");
+		String place = br.readLine();
+		
+		// må legge dette inn i appointment. Men hva om de ikke ønsker å endre alle feltene?
+		// i tillegg, må her sjekke om det krasjer med noe.
+		
+	}
+
+	private static void cancelAppointment(Appointment appointment) {
+		p.getLoggedInAs().getCalendar().remove(appointment);
 		
 	}
 
