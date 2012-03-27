@@ -20,7 +20,7 @@ public class Meeting extends AbstractAppointment {
 		this.meetingLeader = meetingLeader;
 	}
 
-	public Meeting(int id, Person meetingLeader, Meetingroom meetingRoom, Date startTime, Date endTime, String description) {
+	public Meeting(int id, Date startTime, Date endTime, String description, Person meetingLeader, Meetingroom meetingRoom) {
 		super(id, startTime,endTime,description);
 		this.meetingLeader = meetingLeader;
 		this.meetingRoom = meetingRoom;

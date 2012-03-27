@@ -236,7 +236,7 @@ public class Klient {
 		System.out.println("Where?");
 		String where = br.readLine();
 
-		Appointment a = new Appointment (st, et, descr, where);
+		Appointment a = new Appointment (1,st, et, descr, where);
 		p.getLoggedInAs().addSomethingToCalendar(a);
 
 	}

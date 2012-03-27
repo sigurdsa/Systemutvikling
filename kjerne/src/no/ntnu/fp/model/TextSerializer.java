@@ -34,7 +34,7 @@ public class TextSerializer {
 		Meetingroom meetingroom = p.getMeetingroomById(Integer.parseInt(liste[2]));
 		Date start = new Date(Integer.parseInt(liste[3].substring(0, 3), Integer.parseInt(liste[3].substring(5,6), Integer.parseInt(liste[3].substring(7,8)))));
 		Date end = new Date(Integer.parseInt(liste[4].substring(0, 3), Integer.parseInt(liste[4].substring(5,6), Integer.parseInt(liste[4].substring(7,8)))));
-		return new Meeting(Integer.parseInt(liste[0]),leder,meetingroom,start,end,liste[5]);
+		return new Meeting(Integer.parseInt(liste[0]),start,end,liste[5],leder,meetingroom);
 	}
 	
 	public String meetingToText(Meeting m) {
@@ -47,5 +47,6 @@ public class TextSerializer {
 	public Meetingroom textToMeetingroom(String text) {
 		String[] liste = text.split(";");
 		//return new Meetingroom();
+		return null;
 	}
 }

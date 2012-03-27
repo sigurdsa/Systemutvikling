@@ -281,7 +281,7 @@ public class Project implements PropertyChangeListener {
 	}
 
 	public Meeting createMeeting(Date startTime, Date endTime, String description){
-		Meeting meeting = new Meeting(startTime, endTime, description, loggedInAs);
+		Meeting meeting = new Meeting(1,startTime, endTime, description, loggedInAs);
 
 		if (isFree(startTime, endTime, loggedInAs.getCalendar())){
 			meetings.add(meeting);
@@ -290,7 +290,7 @@ public class Project implements PropertyChangeListener {
 		}
 		else{
 			System.out.println("You are busy in this period. Try again");
-			break;
+			return null;
 		}
 	}
 
@@ -308,7 +308,7 @@ public class Project implements PropertyChangeListener {
 	}
 
 	public Meeting createMeeting(Date st, Date et, String description, Meetingroom meetingroom) {
-		Meeting meeting = new Meeting(st, et, description, loggedInAs, meetingroom);
+		Meeting meeting = new Meeting(1,st, et, description, loggedInAs, meetingroom);
 		meetings.add(meeting);
 		return meeting;
 
