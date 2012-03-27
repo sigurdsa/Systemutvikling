@@ -236,8 +236,8 @@ public class Klient {
 		System.out.println("Where?");
 		String where = br.readLine();
 
-		Appointment a = new Appointment (1,st, et, descr, where);
-		p.getLoggedInAs().addSomethingToCalendar(a);
+		//Appointment a = new Appointment (1,st, et, descr, where);
+		//p.getLoggedInAs().addSomethingToCalendar(a);
 
 	}
 
@@ -492,7 +492,7 @@ public class Klient {
 	public static void cancelMeeting(Meeting m) throws IOException{
 		System.out.println("Write an explanation for why the meeting was cancelled");
 		String a = br.readLine();
-		Message msg = new Message(p.getLoggedInAs(), m.getParticipants(), a);
+		//Message msg = new Message(p.getLoggedInAs(), m.getParticipants(), a);
 		// her må det gjøres noe i forhold til meldinger.
 		//Møtet må også bli slettet fra alle lister!!! How to do it? Dvs alle møteromslistene, samt alle requester møte inngår i. 
 	}
