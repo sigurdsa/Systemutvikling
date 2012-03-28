@@ -54,7 +54,7 @@ public class Db {
 			}
 			in.close();
 		} catch (Exception e) {
-			System.out.println("Kunne ikke åpne fil");
+			System.out.println("Kunne ikke åpne fil. getPersons()");
 			System.out.println(e.getMessage());
 		}		
 		return liste;
@@ -73,7 +73,7 @@ public class Db {
 			}
 			in.close();
 		} catch (Exception e) {
-			System.out.println("Kunne ikke åpne fil");
+			System.out.println("Kunne ikke åpne fil. getMeetingrooms()");
 			System.out.println(e.getMessage());
 		}		
 		return liste;
@@ -92,7 +92,7 @@ public class Db {
 			}
 			in.close();
 		} catch (Exception e) {
-			System.out.println("Kunne ikke åpne fil");
+			System.out.println("Kunne ikke åpne fil. getMeetings()");
 			System.out.println(e.getMessage());
 		}		
 		return liste;
@@ -111,7 +111,7 @@ public class Db {
 			}
 			in.close();
 		} catch (Exception e) {
-			System.out.println("Kunne ikke åpne fil");
+			System.out.println("Kunne ikke åpne fil. getMeetingRequests()");
 			System.out.println(e.getMessage());
 		}		
 		return liste;
@@ -130,8 +130,9 @@ public class Db {
 			}
 			in.close();
 		} catch (Exception e) {
-			System.out.println("Kunne ikke åpne fil");
+			System.out.println("Kunne ikke åpne fil. getAppointments()");
 			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}		
 		return liste;
 	}
@@ -149,7 +150,7 @@ public class Db {
 			}
 			in.close();
 		} catch (Exception e) {
-			System.out.println("Kunne ikke åpne fil");
+			System.out.println("Kunne ikke åpne fil. getMessages()");
 			System.out.println(e.getMessage());
 		}		
 		return liste;
