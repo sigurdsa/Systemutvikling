@@ -88,7 +88,10 @@ public class Db {
 				String[] linjeliste = linje.split(";");
 				if(linjeliste[0].equals("Meeting")) {	
 					liste.add(new Meeting(linjeliste[1],linjeliste[2],linjeliste[3],linjeliste[4],p.getPersonById(Integer.parseInt(linjeliste[5])),p.getMeetingroomById(Integer.parseInt(linjeliste[6]))));
+					p.getPersonById(Integer.parseInt(linjeliste[5])).addMeeting(liste.get(liste.size()-1));
 				}
+				
+				
 			}
 			in.close();
 		} catch (Exception e) {
@@ -105,8 +108,13 @@ public class Db {
 			String linje;
 			while ((linje = in.readLine()) != null) {
 				String[] linjeliste = linje.split(";");
-				if(linjeliste[0].equals("Meetingrequest")) {	
-					liste.add(new Meetingrequest(p.getMeetingById(Integer.parseInt(linjeliste[1])), p.getPersonById(Integer.parseInt(linjeliste[2])), linjeliste[3]));
+				if(linjeliste[0].equals("Meetingrequest")) {
+					Meetingrequest m = new Meetingrequest(p.getMeetingById(Integer.parseInt(linjeliste[1])), p.getPersonById(Integer.parseInt(linjeliste[2])), linjeliste[3]) ;
+					liste.add(m);
+					if(linjeliste[3].equals("1")) {
+						p.getPersonById(Integer.parseInt(linjeliste[2])).addMeeting(m.getMeeting());
+					}
+					
 				}
 			}
 			in.close();
@@ -155,6 +163,4 @@ public class Db {
 		}		
 		return liste;
 	}
-
-
 }

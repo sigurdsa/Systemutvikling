@@ -5,9 +5,13 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
+
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
+
 import no.ntnu.fp.model.Meetingrequest;
 import no.ntnu.fp.storage.Db;
 
@@ -26,6 +30,7 @@ public class Project implements PropertyChangeListener {
 	private ArrayList<Meeting> meetings;
 	private ArrayList<Meetingrequest> meetingRequests;
 	private ArrayList<Message> messages;
+	private ArrayList<AbstractAppointment> appointments;
 	
 	private Db db;
 
@@ -41,13 +46,25 @@ public class Project implements PropertyChangeListener {
 		meetings = db.getMeetings(this);
 		meetingRequests = db.getMeetingRequests(this);
 		messages = db.getMessages(this);
+		appointments = new ArrayList<AbstractAppointment>();
 		Iterator itr = personList.iterator();
 		while(itr.hasNext()) {
 			Person p = (Person) itr.next();
 			p.addCalendarList(db.getAppointments(p.getId()));
+			appointments.addAll(db.getAppointments(p.getId()));
 			// Legg til møter?
 		}
 		propChangeSupp = new java.beans.PropertyChangeSupport(this);
+	}
+
+	private ArrayList<AbstractAppointment> getMeetingsByPersonId(int id) {
+		ArrayList<AbstractAppointment> liste = new ArrayList<AbstractAppointment>();
+		Iterator itr = liste.iterator();
+		while(itr.hasNext()){
+			AbstractAppointment a = (AbstractAppointment) itr.next();
+			
+		}
+		return liste;
 	}
 
 	public int getObjectId (ArrayList liste){
@@ -295,19 +312,6 @@ public class Project implements PropertyChangeListener {
 
 	}
 
-	public Meeting createMeeting(Date startTime, Date endTime, String description){
-		//Meeting meeting = new Meeting(1,startTime, endTime, description, loggedInAs);
-		Meeting meeting = new Meeting(1,"", "", description, loggedInAs);
-		if (isFree(startTime, endTime, loggedInAs.getCalendar())){
-			meetings.add(meeting);
-			loggedInAs.addSomethingToCalendar(meeting);
-			return meeting;
-		}
-		else{
-			System.out.println("You are busy in this period. Try again");
-			return null;
-		}
-	}
 
 	public boolean isFree(Date start, Date end, ArrayList<AbstractAppointment> arrayList) {
 		int r1;
@@ -322,12 +326,11 @@ public class Project implements PropertyChangeListener {
 		return true;
 	}
 
-	public Meeting createMeeting(Date st, Date et, String description, Meetingroom meetingroom) {
-		//Meeting meeting = new Meeting(1,st, et, description, loggedInAs, meetingroom);
-		Meeting meeting = new Meeting(""+1,"", "", description, loggedInAs, meetingroom);
+	public Meeting createMeeting(String startTime, String endTime, String description, Meetingroom meetingroom) {		
+		Meeting meeting = new Meeting(""+getMeetingID(),startTime, endTime, description, loggedInAs, meetingroom);
 		meetings.add(meeting);
+		loggedInAs.addMeeting(meeting);
 		return meeting;
-
 	}
 
 	public ArrayList<Meeting> showAllCreatedMeetings() {
@@ -351,12 +354,38 @@ public class Project implements PropertyChangeListener {
 	}
 
 
-	public void showCalendar(Person p, int week) {
-		System.out.println("You are now looking at " + p.getName() + "'s calendar. Week number");
-		System.out.println("Dato:	Tid: 	Hvor: 	Beskrivelse:");
-		for (int i = 0; i < p.getCalendar().size(); i++){
-			printMeeting(p.getCalendar().get(i));
+	public ArrayList<AbstractAppointment> showCalendar(Person p, int week) {
+		ArrayList<AbstractAppointment> liste = new ArrayList<AbstractAppointment>();
+		if (p == null) { // Denne brukeren
+			p = loggedInAs;
 		}
+		
+		// Fikser fradato
+		Date now = new Date();
+		Calendar c = Calendar.getInstance();
+		c.setTime(now);
+		c.add(Calendar.DATE, 6*(week-1));
+	
+		now = c.getTime();
+		if (week != 1 && now.getDay() != 0) { // Dersom ikke inneværende uke, fikser slik at man starter på mandag
+			c.setTime(now);
+			c.add(Calendar.DATE, -now.getDay()+1);
+			now = c.getTime();
+		}
+		now.setHours(00);
+		now.setMinutes(00);
+		now.setSeconds(00);
+		
+		// Fikser tildato
+		Date end = now;
+		c.setTime(end);
+		c.add(Calendar.DATE, 7-now.getDay());
+		end = c.getTime();
+		end.setHours(23);
+		end.setMinutes(59);
+		end.setSeconds(00);
+		
+		return p.getCalendar(now,end);	
 	}
 
 
@@ -379,10 +408,10 @@ public class Project implements PropertyChangeListener {
 
 	public int CountNewRequests() {
 		int c = 0;
-		for ( int i = 0; i < loggedInAs.getMeetingRequestList().size(); i++){
-			if (!loggedInAs.getMeetingRequestList().get(i).hasAnswered()){
-				c += 1;
-			}
+		Iterator itr = meetingRequests.iterator();
+		while(itr.hasNext()) {
+			Meetingrequest mr = (Meetingrequest) itr.next();
+			if(mr.getParticipant() == loggedInAs && !mr.hasAnswered()) c++;
 		}
 		return c;
 	}
@@ -465,4 +494,154 @@ public class Project implements PropertyChangeListener {
 		
 	}
 
+	public ArrayList<Meetingroom> getAvailableMeetingrooms(String startTime,String endTime, int nbr) {
+		ArrayList<Meetingroom> liste = new ArrayList<Meetingroom>();
+		liste.addAll(meetingRooms);
+		int[] startdato = {Integer.parseInt(startTime.substring(0, 4)),Integer.parseInt(startTime.substring(5, 7)),Integer.parseInt(startTime.substring(8, 10)),Integer.parseInt(startTime.substring(11, 13)),Integer.parseInt(startTime.substring(14, 16))};
+		int[] enddato = {Integer.parseInt(endTime.substring(0, 4)),Integer.parseInt(endTime.substring(5, 7)),Integer.parseInt(endTime.substring(8, 10)),Integer.parseInt(endTime.substring(11, 13)),Integer.parseInt(endTime.substring(14, 16))};
+		Calendar c = Calendar.getInstance();
+		c.set(startdato[0], startdato[1]-1,startdato[2],startdato[3],startdato[4],0);
+		Date start = c.getTime();
+		c.set(enddato[0], enddato[1]-1,enddato[2],enddato[3],enddato[4],0);
+		Date end = c.getTime();
+		
+		Iterator itr = meetings.iterator();
+		
+		while(itr.hasNext()) {
+			Meeting m = (Meeting) itr.next();
+			if ((start.compareTo(m.getStartTime()) >0 && start.compareTo(m.getEndTime()) < 0) || (end.compareTo(m.getStartTime()) >0 && end.compareTo(m.getEndTime()) < 0)){
+				liste.remove(m.getMeetingRoom());
+			}
+		}
+		
+		for (int i = 0; i < liste.size(); i++) {
+			if(liste.get(i).getSeats() < nbr) liste.remove(i);
+		}
+		return liste;
+	}
+
+	public ArrayList<Person> getAvailablePersons(Meeting m) {
+		ArrayList<Person> liste = new ArrayList<Person>();
+		liste.addAll(personList);
+		for (int i = 0; i < liste.size(); i++) {
+			if (liste.get(i).isBusy(m.getStartTime(), m.getEndTime())) liste.remove(i);
+		}
+		return liste;
+	}
+
+	public void addMeetingrequest(Meeting m, Person p) {
+		meetingRequests.add(new Meetingrequest(m, p, "2"));
+	}
+
+	public void changeMeeting(Meeting meeting, String start, String end) {
+		// Fjerner fra alle kalendere
+		Iterator itr = personList.iterator();
+		
+		while(itr.hasNext()) {
+			Person p = (Person) itr.next();
+			if (p.getCalendar().contains(meeting)) {
+				p.removeFromCalendar(meeting);
+				messages.add(new Message(loggedInAs,p, "Møtet som opprinnelig startet " + meeting.getStartTime() + " er nå flyttet til " + start + " - " + start.substring(11) + ". Du må på nytt svare på om det passer."));
+			}
+		}
+		
+		// Reset på svar
+		itr = meetingRequests.iterator();
+		while(itr.hasNext()) {
+			Meetingrequest mr = (Meetingrequest) itr.next();
+			if (mr.getMeeting() == meeting) mr.resetAnswer();
+		}
+		
+		meeting.setStartTime(stringToDate(start));
+		meeting.setStartTime(stringToDate(end));
+		
+	}
+	
+	private Date stringToDate(String startTime) {
+		Calendar c = Calendar.getInstance();
+		int[] startdato = {Integer.parseInt(startTime.substring(0, 4)),Integer.parseInt(startTime.substring(5, 7)),Integer.parseInt(startTime.substring(8, 10)),Integer.parseInt(startTime.substring(11, 13)),Integer.parseInt(startTime.substring(14, 16))};
+		c.set(startdato[0], startdato[1]-1,startdato[2],startdato[3],startdato[4],0);
+		return c.getTime();	
+	}
+
+	public void removeMeeting(Meeting meeting, String a) {
+		Iterator itr = personList.iterator();
+		
+		while(itr.hasNext()) {
+			Person p = (Person) itr.next();
+			if (p.getCalendar().contains(meeting)) {
+				p.removeFromCalendar(meeting);
+				messages.add(new Message(loggedInAs,p, "Møtet som opprinnelig startet " + meeting.getStartTime() + " er nå slettet grunnet " + a));
+			}
+		}
+		// Fjerne meetingreq
+		Iterator it = meetingRequests.iterator();
+		ArrayList<Meetingrequest> deleteList = new ArrayList<Meetingrequest>();
+		while(it.hasNext()) {
+			Meetingrequest mr = (Meetingrequest) it.next();
+			if (mr.getMeeting() == meeting) deleteList.add(mr);
+		}	
+		itr = deleteList.iterator();
+		while(itr.hasNext()) {
+			meetingRequests.remove(itr.next());
+		}
+		
+		meetings.remove(meeting);
+	}
+
+	public boolean changeAppointment(Appointment appointment, String start,String end) {
+		if(loggedInAs.isBusy(stringToDate(start), stringToDate(end)))  return false;
+		appointment.setStartTime(stringToDate(start));
+		appointment.setEndTime(stringToDate(end));
+		return true;
+	}
+
+	public void removeAppointment(Appointment appointment) {
+		loggedInAs.removeFromCalendar(appointment);
+	}
+
+	public void addAppointment(String descr, String where, String start,
+			String end) {
+		Appointment a = new Appointment(""+getObjectId(appointments),start,end, descr, where);
+		loggedInAs.addSomethingToCalendar(a);
+		appointments.add(a);		
+	}
+
+	public ArrayList<Meetingrequest> getMeetingrequests() {
+		ArrayList<Meetingrequest> liste = new ArrayList<Meetingrequest>();
+		Iterator itr = meetingRequests.iterator();
+		while(itr.hasNext()) {
+			Meetingrequest mr = (Meetingrequest) itr.next();
+			if (mr.getParticipant() == loggedInAs && !mr.hasAnswered()) liste.add(mr);
+		}
+		return liste;
+	}
+
+	public void answerMeetingrequest(Meetingrequest meetingrequest, boolean b) {
+		if(b) {
+			meetingrequest.setAttending(true);
+			loggedInAs.addSomethingToCalendar(meetingrequest.getMeeting());
+		} else meetingrequest.setAttending(false);
+	}
+
+	public int countMessages() {
+		int c = 0;
+		Iterator itr = messages.iterator();
+		while(itr.hasNext()) {
+			Message m = (Message) itr.next();
+			if(m.getReciever() == loggedInAs && !m.isRead()) c++;
+		}
+		return c;	
+	}
+
+	public ArrayList<Message> getMessages() {
+		ArrayList<Message> liste = new ArrayList<Message>();
+		Iterator itr = messages.iterator();
+		while(itr.hasNext()) {
+			Message m = (Message) itr.next();
+			m.setRead(true);
+			if(m.getReciever() == loggedInAs) liste.add(m);
+		}
+		return liste;
+	}
 }

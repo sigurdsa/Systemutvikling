@@ -24,6 +24,4 @@ public class Appointment extends AbstractAppointment{
 	public String getPlace(){
 		return place;
 	}
-
-		
-	}
+}

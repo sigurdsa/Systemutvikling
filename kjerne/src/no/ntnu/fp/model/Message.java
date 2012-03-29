@@ -6,10 +6,23 @@ public class Message {
 	
 	private Person sender;
 	private Person reciever;
+	public Person getReciever() {
+		return reciever;
+	}
+	public void setReciever(Person reciever) {
+		this.reciever = reciever;
+	}
+
 	private String text;
 	private boolean isRead; // denne gir lite mening dersom vi lager en message for en liste..!
 	
 	
+	public boolean isRead() {
+		return isRead;
+	}
+	public void setRead(boolean isRead) {
+		this.isRead = isRead;
+	}
 	public Message(Person sender, Person reciever, String text){
 		this.sender = sender;
 		this.reciever = reciever;

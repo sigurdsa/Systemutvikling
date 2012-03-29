@@ -3,9 +3,12 @@ package no.ntnu.fp.model;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Iterator;
 
 /**
  * The <code>Person</code> class stores information about a single person.
@@ -333,5 +336,38 @@ public class Person {
 	public char[] appointmentsToDb() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public ArrayList<AbstractAppointment> getCalendar(Date now, Date end) {
+		ArrayList<AbstractAppointment> liste = new ArrayList<AbstractAppointment>();
+		Iterator itr = calendar.iterator();
+		while(itr.hasNext()) {
+			
+			AbstractAppointment a = (AbstractAppointment) itr.next();
+			
+			if( a.getStartTime().compareTo(now) >=0 && a.getEndTime().compareTo(end) <= 0) {
+				liste.add(a);
+			}
+		}
+		return liste;
+	}
+
+	public void addMeeting(Meeting m) {
+		if (!calendar.contains(m)) calendar.add(m);
+	}
+
+	public boolean isBusy(Date start, Date end) {
+		Iterator itr = calendar.iterator();
+		
+		while(itr.hasNext()) {
+			AbstractAppointment a = (AbstractAppointment) itr.next();
+			if((a.getStartTime().compareTo(start) >=0 && a.getStartTime().compareTo(end)<=0) || 
+					(a.getEndTime().compareTo(start) >=0 && a.getEndTime().compareTo(end)<=0)) return true;			
+		}
+		return false;
+	}
+
+	public void removeFromCalendar(AbstractAppointment meeting) {
+		calendar.remove(meeting);		
 	}
 }

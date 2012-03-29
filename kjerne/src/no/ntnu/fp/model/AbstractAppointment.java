@@ -1,5 +1,9 @@
 package no.ntnu.fp.model;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public abstract class AbstractAppointment {
@@ -10,20 +14,14 @@ public abstract class AbstractAppointment {
 	
 	public AbstractAppointment(int id,String startTime, String endTime, String description){
 		this.id = id;
-		Date start = new Date();
-		start.setYear(Integer.parseInt(startTime.substring(0, 3)));
-		start.setMonth(Integer.parseInt(startTime.substring(5, 6)));
-		start.setDate(Integer.parseInt(startTime.substring(8, 9)));
-		start.setHours(Integer.parseInt(startTime.substring(11, 12)));
-		start.setMinutes(Integer.parseInt(startTime.substring(14, 15)));
-		Date slutt = new Date();
-		slutt.setYear(Integer.parseInt(endTime.substring(0, 3)));
-		slutt.setMonth(Integer.parseInt(endTime.substring(5, 6)));
-		slutt.setDate(Integer.parseInt(endTime.substring(8, 9)));
-		slutt.setHours(Integer.parseInt(endTime.substring(11, 12)));
-		slutt.setMinutes(Integer.parseInt(endTime.substring(14, 15)));		
-		this.startTime = start;
-		this.endTime = slutt;
+		int[] startdato = {Integer.parseInt(startTime.substring(0, 4)),Integer.parseInt(startTime.substring(5, 7)),Integer.parseInt(startTime.substring(8, 10)),Integer.parseInt(startTime.substring(11, 13)),Integer.parseInt(startTime.substring(14, 16))};
+		Calendar c = Calendar.getInstance();
+		c.set(startdato[0], startdato[1]-1,startdato[2],startdato[3],startdato[4],0);
+		this.startTime = c.getTime();
+		
+		int[] enddato = {Integer.parseInt(endTime.substring(0, 4)),Integer.parseInt(endTime.substring(5, 7)),Integer.parseInt(endTime.substring(8, 10)),Integer.parseInt(endTime.substring(11, 13)),Integer.parseInt(endTime.substring(14, 16))};
+		c.set(enddato[0], enddato[1]-1,enddato[2],enddato[3],enddato[4],0);
+		this.endTime = c.getTime();
 		this.description = description;
 	}
 	
@@ -51,5 +49,8 @@ public abstract class AbstractAppointment {
 		return description;
 	}
 	
+	public int getId() { 
+		return this.id;
+	}
 
 }

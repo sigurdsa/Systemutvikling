@@ -26,14 +26,6 @@ public class Meeting extends AbstractAppointment {
 		this.meetingRoom = meetingRoom;
 	}
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
 	public Person getMeetingLeader() {
 		return meetingLeader;
 	}
