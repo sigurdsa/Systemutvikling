@@ -265,7 +265,7 @@ public class Klient {
 			String df1=new SimpleDateFormat("yyyy-MMM-dd hh:mm").format(l.get(i).getStartTime());
 			String df2=new SimpleDateFormat("yyyy-MMM-dd hh:mm").format(l.get(i).getEndTime());
 
-			System.out.println(i + ". Start: " + df1 + "     End: " + df2 + "     Description: " + l.get(i).getDescription() + "     Room: " + l.get(i).getMeetingRoom().getName());
+			System.out.println(i + ". Start: " + df1 + "     End: " + df2 + "     Description: " + l.get(i).getDescription() + "     Room: " + ((l.get(i).getMeetingRoom()!= null) ? l.get(i).getMeetingRoom().getName():"Ingen rom valgt"));
 		}
 
 		System.out.print("Would you like to cancel a meeting? (y/n): ");
