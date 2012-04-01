@@ -216,7 +216,39 @@ public class ConnectionImpl extends AbstractConnection {
      * @see Connection#close()
      */
     public void close() throws IOException {
-        throw new NotImplementedException();
+        try {
+        	if (state != State.ESTABLISHED) {
+        		throw new IOException("~~Connection is/was/are/am/he/she/it established CAFEBABE~~");
+        	}
+        
+        	state = State.FIN_WAIT_1;
+        	KtnDatagram retur = null;
+        	KtnDatagram finpakke = constructInternalPacket(Flag.FIN);
+        	int retry = 4;
+        	while ((retur = null || retur.getFlag() == Flag.FIN) && retry-- > 0){
+        		if (disconnectRequest != null){ //hvis allerede motpart har sendt fin
+        			sendAck(disconnectRequest, false);
+        			state = State.FIN_WAIT_2;
+        		}
+        		retur = sendHelper(finpakke);
+        		if (retur.getFlag() == Flag.FIN); {
+        		disconnectRequest = retur;
+        		}
+        	}
+        	if (state == State.FIN_WAIT_1 && retry > 0){
+        		state = State.CLOSE_WAIT;
+        		retry = 4;
+        		while (!isValid(disconnectRequest) && retry-- > 0) {
+        			disconnectRequest = receivePacket(true);
+        		}
+        		sendAck(disconnectRequest, false);
+        	}
+        }
+        catch (Exception e) {
+        	System.out.println("~~~~~~~~~~Error during system close~~~~~~~~~~~~ " + e ); 
+        	}
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Connection closed");
+        state = State.CLOSED;
     }
 
     /**
