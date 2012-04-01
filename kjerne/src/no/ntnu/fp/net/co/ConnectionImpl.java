@@ -225,7 +225,7 @@ public class ConnectionImpl extends AbstractConnection {
         	KtnDatagram retur = null;
         	KtnDatagram finpakke = constructInternalPacket(Flag.FIN);
         	int retry = 4;
-        	while ((retur = null || retur.getFlag() == Flag.FIN) && retry-- > 0){
+        	while ((retur == null || retur.getFlag() == Flag.FIN) && retry-- > 0){
         		if (disconnectRequest != null){ //hvis allerede motpart har sendt fin
         			sendAck(disconnectRequest, false);
         			state = State.FIN_WAIT_2;
