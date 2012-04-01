@@ -114,8 +114,7 @@ public class ConnectionImpl extends AbstractConnection {
         return newConnection;
     }
     
-    
-    // en ny klasse for å fullføre en tilkobling startet med accept
+       // en ny klasse for å fullføre en tilkobling startet med accept
     private void finalizeConnection(KtnDatagram synpack) throws IOException {
     	lastValidPacketReceived = synpack;
     	state = State.SYN_RCVD;
@@ -158,6 +157,30 @@ public class ConnectionImpl extends AbstractConnection {
     	sendHelper(constructDataPacket(msg));
     	System.out.println("----------------------------------------------------------Packet succsessfully sent");
     }
+    
+  //sender pakken til gyldig ack/respons mottas
+    private KtnDatagram sendHelper(KtnDatagram sendPacket) throws ConnectException, IOException {
+    	int retry = 30; //anntall forsøk før godkjent ack må ha kommet (SDWR stopper å sende uansett om ack er gyldig eller ikke)	
+    	KtnDatagram retur = null;
+    	while (!isValid(retur) && retry-- > 0) {
+    		try {
+    			if (retur != null && retur.getFlag() == Flag.ACK) { //var en ack, bare ikke riktig sekvensnr
+    				retry++; //connection er antageligvis fortsatt oppe så ikke senk retry pga det.
+    			}
+    			System.out.println("----------------------------------------------------------" + retry + " attempts left to send");
+    			simplySendPacket(sendPacket);
+    			retur = receiveAck();
+    		}
+    		catch (ClException e) {
+    			//prøv på nytt
+    		}
+    	}
+    	if (!isValid(retur)) { // betyr mest sannsynlig at ingen ack var mottatt
+    		state = State.CLOSED;
+    		throw new IOException("Could not send packet");
+    	}
+    	return retur;
+    }
 
     /**
      * Wait for incoming data.
@@ -188,7 +211,51 @@ public class ConnectionImpl extends AbstractConnection {
      *            Packet to test.
      * @return true if packet is free of errors, false otherwise.
      */
+
     protected boolean isValid(KtnDatagram packet) {
-        throw new NotImplementedException();
-    }
+	// Pakken må være annet enn null, ha riktig checksum og være passende for den staten systemet er i
+	if (packet != null && packet.calculateChecksum() == packet.getChecksum() && isStateValid(packet)) {
+		//lastValidPacketReceived = packet; fjernet pga ack-feil
+		return true;
+	}
+	return false;
 }
+//Sjekker her om den er valid i forhold til den staten den er i MÅ SJEKKE SEKVENS VED ACKING
+private boolean isStateValid(KtnDatagram packet) {
+	//er det en ack pakke sjekkes det at pakken acker forrige pakke sent, ellers er det uansett false
+	if ((packet.getFlag() == Flag.ACK || packet.getFlag() == Flag.SYN_ACK) && packet.getAck() != lastDataPacketSent.getSeq_nr()) {
+		return false;
+	}
+	// Hvis det er en fin pakke så må data være null
+	if (packet.getFlag() == Flag.FIN && packet.getPayload() != null) {
+		return false; //hadde fikset problemet med at fin dukker opp i datapakker av og til hvis abstractconnection hadde kallt isValid som i dokumentasjonen
+	}
+	// Hvis state er SYN_SENT, betyr det at pakken bør være SYN_ACK og at den er fra riktig host
+	if (state == State.SYN_SENT) {
+		remotePort = packet.getSrc_port(); //verdien blir uansett satt riktig neste gang connect kjøres selv om pakken ikke var synack, sjekker acknr
+		return (packet.getFlag() == Flag.SYN_ACK && remoteAddress.equals(packet.getSrc_addr()));
+	}
+	else if (state == State.LISTEN) {
+		return (packet.getFlag() == Flag.SYN);
+	}
+	//alle andre pakker skal port og source være stilt inn for programmet så her sjekker den etter feil
+	else if (packet.getSrc_addr() != remoteAddress && packet.getSrc_port() != remotePort) {
+		return false;
+	}
+	//dette må være ack
+	else if (state == State.SYN_RCVD) {
+		return (packet.getFlag() == Flag.ACK);
+	}
+	//ønsker her ack tilbake eller fin
+	else if (state == State.FIN_WAIT_1 || state == State.FIN_WAIT_2) {
+		return (packet.getFlag() == Flag.FIN || packet.getFlag() == Flag.ACK);
+	}
+	//dette må være fin-pakke
+	else if (state == State.CLOSE_WAIT) {
+		return (packet.getFlag() == Flag.FIN);
+	}
+	return true;
+	//sjekker til sammen etter null-pakker, checksum, remoteaddress, remoteport, seqno, 
+}
+}
+
