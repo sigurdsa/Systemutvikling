@@ -194,17 +194,18 @@ public class ConnectionImpl extends AbstractConnection {
      */
     public String receive() throws ConnectException, IOException {
         if(state != State.ESTABLISHED) {
-        	throw new ConnectionException("~~ Connection must be established to recieve packages! ~~");
+        	throw new ConnectException("~~ Connection must be established to recieve packages! ~~");
         }
-        KtnDatagram motatt = receivePacket(false);
-        if (isValid(motatt) && motatt.getSeq_nr() > lastValidPacketReceived.getSeq_nr() && motatt.getSeq_nr() < (lastValidPacketReceived.getSeq_nr() + 30)){
-        	sendAck(motatt, false);
-        	lastValidPacketReceived = motatt;
-        	return.motatt.toString();
+        KtnDatagram mottatt = receivePacket(false);
+        //sjekker her seq nr, tatt høyde for header feil og uregelmessige acker som forskyver seq nr
+        if (isValid(mottatt) && mottatt.getSeq_nr() > lastValidPacketReceived.getSeq_nr() && mottatt.getSeq_nr() < (lastValidPacketReceived.getSeq_nr() + 30)){
+        	sendAck(mottatt, false);
+        	lastValidPacketReceived = mottatt;
+        	return mottatt.toString();
  	        }
         else {
-        	sendAck(lastValidPacketReceived, false);
-        	return null;
+        	sendAck(lastValidPacketReceived, false); //sender ny ack på forrige mottatt, for å få den riktige pakken!
+        	return null; //returnerer null
         }
         	
     }
