@@ -205,7 +205,7 @@ public class ConnectionImpl extends AbstractConnection {
  	        }
         else {
         	sendAck(lastValidPacketReceived, false); //sender ny ack på forrige mottatt, for å få den riktige pakken!
-        	return null; //returnerer null
+        	return null; //returnerer null, skal gå bra
         }
         	
     }
