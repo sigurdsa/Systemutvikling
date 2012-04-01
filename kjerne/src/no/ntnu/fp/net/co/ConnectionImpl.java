@@ -13,6 +13,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.jdom.output.EscapeStrategy;
+
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import no.ntnu.fp.net.admin.Log;
@@ -191,7 +193,20 @@ public class ConnectionImpl extends AbstractConnection {
      * @see AbstractConnection#sendAck(KtnDatagram, boolean)
      */
     public String receive() throws ConnectException, IOException {
-        throw new NotImplementedException();
+        if(state != State.ESTABLISHED) {
+        	throw new ConnectionException("~~ Connection must be established to recieve packages! ~~");
+        }
+        KtnDatagram motatt = receivePacket(false);
+        if (isValid(motatt) && motatt.getSeq_nr() > lastValidPacketReceived.getSeq_nr() && motatt.getSeq_nr() < (lastValidPacketReceived.getSeq_nr() + 30)){
+        	sendAck(motatt, false);
+        	lastValidPacketReceived = motatt;
+        	return.motatt.toString();
+ 	        }
+        else {
+        	sendAck(lastValidPacketReceived, false);
+        	return null;
+        }
+        	
     }
 
     /**
