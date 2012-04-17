@@ -134,9 +134,9 @@ public class ConnectionImpl extends AbstractConnection {
     
     
     private static int createPort() {
-    	int port = (int)(Math.random()*1000) + 14000;
+    	int port = (int)(Math.random()*9) + 31030; // velger en port mellom 31030 og 31039
     	while(usedPorts.containsKey(port)){
-    		port = (int)(Math.random()*1000) + 14000;
+    		port = (int)(Math.random()*9) + 31030;
     	}
     	return port;
     }
