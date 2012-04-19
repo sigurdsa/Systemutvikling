@@ -1,6 +1,3 @@
-/*
- * Created on Oct 27, 2004
- */
 package no.ntnu.fp.net.co;
 
 import java.io.EOFException;
@@ -81,7 +78,7 @@ public class ConnectionImpl extends AbstractConnection {
         if (state != state.CLOSED) {
         	throw new ConnectException("Socket not closed :("); 
         	}
-        this.remoteAddress = remoteAddress.getHostAddress();
+        this.remoteAddress = remoteAddress.getHostAddress(); //"78.91.22.145";
         this.remotePort = remotePort;
         try {
         	state = State.SYN_SENT;
@@ -162,7 +159,7 @@ public class ConnectionImpl extends AbstractConnection {
     
   //sender pakken til gyldig ack/respons mottas
     private KtnDatagram sendHelper(KtnDatagram sendPacket) throws ConnectException, IOException {
-    	int retry = 30; //anntall forsøk før godkjent ack må ha kommet (SDWR stopper å sende uansett om ack er gyldig eller ikke)	
+    	int retry = 30; //antall forsøk før godkjent ack må ha kommet (SDWR stopper å sende uansett om ack er gyldig eller ikke)	
     	KtnDatagram retur = null;
     	while (!isValid(retur) && retry-- > 0) {
     		try {
